@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 
 import { Album } from "../data/albums";
 import ImageSkeleton from "@/components/image-skeleton";
+import Link from "next/link";
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
   album: Album;
@@ -20,7 +21,7 @@ export function AlbumArtwork({
 }: AlbumArtworkProps) {
   return (
     <div className={cn("space-y-3", className)} {...props}>
-      <div className="overflow-hidden rounded-md">
+      <Link href="#" className="overflow-hidden rounded-md">
         <ImageSkeleton
           src={album.cover}
           alt={album.name}
@@ -29,7 +30,7 @@ export function AlbumArtwork({
             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
           )}
         />
-      </div>
+      </Link>
       <div className="space-y-1 text-sm">
         <h3 className="font-medium leading-none">{album.name}</h3>
         <p className="text-xs text-muted-foreground">{album.artist}</p>

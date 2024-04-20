@@ -74,6 +74,7 @@ const page = () => {
       </ScrollArea>
 
       <Populars />
+
       <Pricing />
       <footer className="bg-background py-6">
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">

@@ -1,3 +1,4 @@
+"use client";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -14,9 +15,9 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { cn, createUrl } from "@/lib/utils";
 import Link from "next/link";
-
-export type categoryType = typeof categories;
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const categories = [
   {
@@ -97,8 +98,6 @@ const categories = [
   },
 ];
 
-export type filterOptionsType = (typeof filterOptions)
-
 const filterOptions = [
   {
     name: "Nuevos",
@@ -127,8 +126,6 @@ const filterOptions = [
   },
 ];
 
-export type sortOptionsType = (typeof sortOptions)
-
 const sortOptions = [
   {
     name: "Mas recientes",
@@ -145,6 +142,51 @@ const sortOptions = [
 ];
 
 export function Menu() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const selectedCategories = searchParams.get("category")?.split(",") || [];
+  const selectedSortValues = searchParams.get("sort")?.split(",");
+  const selectedFilterValues = searchParams.get("filter");
+  const router = useRouter();
+
+  const handleCategoryClick = (categoryValue: string) => {
+    const newParams = new URLSearchParams(searchParams?.toString());
+    let updatedCategories = [...selectedCategories];
+    const categoryIndex = updatedCategories.indexOf(categoryValue);
+
+    if (categoryIndex === -1) {
+      updatedCategories.push(categoryValue);
+    } else {
+      updatedCategories.splice(categoryIndex, 1);
+    }
+
+    if (updatedCategories.length > 0) {
+      newParams.set(
+        "category",
+        updatedCategories.map(encodeURIComponent).join(",")
+      );
+    } else {
+      newParams.delete("category");
+    }
+
+    router.push(createUrl(pathname, newParams));
+    router.refresh();
+  };
+
+  const handleSortClick = (sortValue: string) => {
+    const newParams = new URLSearchParams(searchParams?.toString());
+    newParams.set("sort", sortValue);
+    router.push(createUrl(pathname, newParams));
+    router.refresh();
+  };
+
+  const handleFilterClick = (filterValue: string) => {
+    const newParams = new URLSearchParams(searchParams?.toString());
+    newParams.set("filter", filterValue);
+    router.push(createUrl(pathname, newParams));
+    router.refresh();
+  };
+
   return (
     <Menubar className="rounded-none border-b border-none px-2 lg:px-4 py-8">
       <Link className="font-bold" href="/">
@@ -162,12 +204,15 @@ export function Menu() {
             <MenubarSubContent className="w-[230px]">
               {filterOptions.map((filter) => (
                 <MenubarItem
-                  className="hover:underline  text-sm transition-colors duration-300"
                   key={filter.value}
+                  onClick={() => handleFilterClick(filter.value)}
+                  className={cn(
+                    "hover:underline text-sm transition-colors duration-300",
+                    selectedFilterValues?.includes(filter.value) &&
+                      "underline decoration-primary underline-offset-4"
+                  )}
                 >
-                  <Link href={`/offers?filter=${filter.value}`}>
-                    {filter.name}
-                  </Link>
+                  {filter.name}
                 </MenubarItem>
               ))}
             </MenubarSubContent>
@@ -178,10 +223,15 @@ export function Menu() {
             <MenubarSubContent className="w-[230px]">
               {sortOptions.map((sort) => (
                 <MenubarItem
-                  className="hover:underline  text-sm transition-colors duration-300"
                   key={sort.value}
+                  onClick={() => handleSortClick(sort.value)}
+                  className={cn(
+                    "hover:underline text-sm transition-colors duration-300",
+                    selectedSortValues?.includes(sort.value) &&
+                      "underline decoration-primary underline-offset-4"
+                  )}
                 >
-                  <Link href={`/offers?sort=${sort.value}`}>{sort.name}</Link>
+                  {sort.name}
                 </MenubarItem>
               ))}
             </MenubarSubContent>
@@ -192,12 +242,15 @@ export function Menu() {
             <MenubarSubContent className="w-[230px]">
               {categories.map((category) => (
                 <MenubarItem
-                  className="hover:underline  text-sm transition-colors duration-300"
                   key={category.value}
+                  onClick={() => handleCategoryClick(category.value)}
+                  className={cn(
+                    "hover:underline text-sm transition-colors duration-300",
+                    selectedCategories.includes(category.value) &&
+                      "underline decoration-primary underline-offset-4"
+                  )}
                 >
-                  <Link href={`/offers?category=${category.value}`}>
-                    {category.name}
-                  </Link>
+                  {category.name}
                 </MenubarItem>
               ))}
             </MenubarSubContent>

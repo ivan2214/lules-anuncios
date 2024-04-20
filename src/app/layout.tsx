@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Menu } from "./offers/components/menu";
 import { cn } from "@/lib/utils";
+import { Suspense } from "react";
+import SearchBarFallback from "@/components/fallbacks/search-bar-fallback";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,9 @@ export default function RootLayout({
           inter.className
         )}
       >
-        <Menu />
+        <Suspense fallback={<SearchBarFallback />}>
+          <Menu />
+        </Suspense>
         <main>{children}</main>
       </body>
     </html>

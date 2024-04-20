@@ -7,10 +7,7 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { PiUserSwitchDuotone } from "react-icons/pi";
-import { MdShowChart } from "react-icons/md";
-import { CiShare2 } from "react-icons/ci";
+import { BarChartIcon,  CheckIcon,  ShareIcon, UsersIcon } from "lucide-react";
 
 export function Pricing() {
   return (
@@ -43,15 +40,15 @@ export function Pricing() {
                   </div>
                   <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Publish up to 10 offers
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Manage up to 50 client profiles
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Basic analytics
                     </li>
                   </ul>
@@ -78,19 +75,19 @@ export function Pricing() {
                   </div>
                   <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Publish up to 50 offers
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Manage up to 500 client profiles
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Advanced analytics
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Custom branding
                     </li>
                   </ul>
@@ -117,19 +114,19 @@ export function Pricing() {
                   </div>
                   <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Publish unlimited offers
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Manage unlimited client profiles
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Advanced analytics and reporting
                     </li>
                     <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Dedicated account manager
                     </li>
                     <li className="flex items-center">
@@ -158,7 +155,7 @@ export function Pricing() {
             <div className="grid gap-6 md:grid-cols-2 sticky top-48">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <CiShare2 className="h-6 w-6 fill-primary" />
+                  <ShareIcon className="h-6 w-6 text-primary" />
                   <h3 className="text-xl font-bold">Publish Offers</h3>
                 </div>
                 <p className="text-gray-500 dark:text-gray-400">
@@ -169,7 +166,7 @@ export function Pricing() {
               </div>
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <PiUserSwitchDuotone className="h-6 w-6 fill-primary" />
+                  <UsersIcon className="h-6 w-6 text-primary" />
                   <h3 className="text-xl font-bold">Manage Clients</h3>
                 </div>
                 <p className="text-gray-500 dark:text-gray-400">
@@ -180,7 +177,7 @@ export function Pricing() {
               </div>
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <MdShowChart className="h-6 w-6 fill-primary" />
+                  <BarChartIcon className="h-6 w-6 text-primary" />
                   <h3 className="text-xl font-bold">Track Analytics</h3>
                 </div>
                 <p className="text-gray-500 dark:text-gray-400">
