@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Menu } from "./offers/components/menu";
+import { Menu } from "../components/menu";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import SearchBarFallback from "@/components/fallbacks/search-bar-fallback";
@@ -29,7 +29,7 @@ export default function RootLayout({
         <Suspense fallback={<SearchBarFallback />}>
           <Menu />
         </Suspense>
-        <main>{children}</main>
+        {children}
       </body>
     </html>
   );

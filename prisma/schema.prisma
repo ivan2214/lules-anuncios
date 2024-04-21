@@ -40,17 +40,17 @@ model Offer {
   description String?
   price       Float?
 
-  store   Store   @relation(fields: [storeId], references: [id])
+  store   Store  @relation(fields: [storeId], references: [id])
   storeId String
-  plan    Plan?   @relation(fields: [planId], references: [id])
-  planId  String?
 
   categories Category[] @relation("OfferToCategory")
-  Image      Image[]
+  images     Image[]
   Chat       Chat[]
+  Plan       Plan?      @relation(fields: [planId], references: [id])
+  planId     String?
 
-  @@index([planId])
   @@index([storeId])
+  @@index([planId])
 }
 
 model Image {
@@ -67,7 +67,7 @@ model Image {
 
 model Category {
   id   String @id @default(cuid())
-  name String
+  name String @unique
 
   Offers Offer[] @relation("OfferToCategory")
 }

@@ -24,9 +24,13 @@ export const SearchBar: React.FC<SearchBarProps> = () => {
     } else {
       newParams.delete("search");
     }
-    
-    
-    router.push(createUrl(pathname, newParams));
+    const includesOfferPage = pathname?.includes("offers");
+    const pathNameDefined = !includesOfferPage
+      ? `/offers${pathname}`
+      : pathname;
+
+    router.push(createUrl(pathNameDefined, newParams));
+    router.refresh();
   }
 
   return (
