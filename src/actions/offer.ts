@@ -1,6 +1,6 @@
 "use server";
 
-import { OfferFormValues } from "@/app/create-offer/page";
+import { OfferFormValues } from "@/app/create-offer/components/create-offer-form";
 import { db } from "@/lib/db";
 import { OfferSchema } from "@/schemas";
 import { Image, Offer } from "@prisma/client";
@@ -8,6 +8,8 @@ import { Image, Offer } from "@prisma/client";
 export const createOffer = async (values: OfferFormValues) => {
   let offer: Offer | null = null;
   const validatedFields = OfferSchema.safeParse(values);
+
+  console.log(values);
 
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
@@ -28,14 +30,6 @@ export const createOffer = async (values: OfferFormValues) => {
     },
   });
 
-  if (
-    categories
-      .map((category) => category.name)
-      .some((category: any) => !categorieIsAlreadyCreated.includes(category))
-  ) {
-    return { error: "Invalid fields!" };
-  }
-
   const imagesIsAlreadyCreated = await db.image.findMany({
     where: {
       url: {
@@ -43,14 +37,6 @@ export const createOffer = async (values: OfferFormValues) => {
       },
     },
   });
-
-  if (
-    images
-      .map((image) => image.url)
-      .some((image: any) => !imagesIsAlreadyCreated.includes(image))
-  ) {
-    return { error: "Invalid fields!" };
-  }
 
   if (imagesIsAlreadyCreated.length && categorieIsAlreadyCreated.length) {
     offer = await db.offer.create({
