@@ -22,85 +22,9 @@ import UserMenu from "./user-menu";
 import { SearchBar } from "./search-bar";
 import { Suspense } from "react";
 import SearchBarFallback from "./fallbacks/search-bar-fallback";
+import { Category, Store } from "@prisma/client";
 
-const categories = [
-  {
-    name: "Todas",
-    value: "all",
-  },
-  {
-    name: "Limpieza",
-    value: "cleaning",
-  },
-  {
-    name: "Cocina",
-    value: "kitchen",
-  },
-  {
-    name: "Jardinería",
-    value: "gardening",
-  },
-  {
-    name: "Aparatos",
-    value: "devices",
-  },
-  {
-    name: "Juguetes",
-    value: "toys",
-  },
-  {
-    name: "Cuidado personal",
-    value: "personal_care",
-  },
-  {
-    name: "Hogar",
-    value: "home",
-  },
-  {
-    name: "Libros",
-    value: "books",
-  },
-  {
-    name: "Musica",
-    value: "music",
-  },
-  {
-    name: "Peliculas",
-    value: "movies",
-  },
-  {
-    name: "Series",
-    value: "series",
-  },
-  {
-    name: "Juegos",
-    value: "games",
-  },
-  {
-    name: "Deportes",
-    value: "sports",
-  },
-  {
-    name: "Viajes",
-    value: "travel",
-  },
-  {
-    name: "Vehiculos",
-    value: "vehicles",
-  },
-  {
-    name: "Animales",
-    value: "animals",
-  },
-  {
-    name: "Electronica",
-    value: "electronics",
-  },
-  {
-    name: "Otros",
-    value: "others",
-  },
-];
+
 
 const filterOptions = [
   {
@@ -145,7 +69,7 @@ const sortOptions = [
   },
 ];
 
-export function Menu() {
+export function Menu({categories,stores}: {categories?: Category[],stores?: Store[]}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const selectedCategories = searchParams.get("category")?.split(",") || [];
@@ -206,6 +130,19 @@ export function Menu() {
     router.refresh();
   };
 
+  const handleStoreClick = (storeValue: string) => {
+    const newParams = new URLSearchParams(searchParams?.toString());
+    newParams.set("store", storeValue);
+    const includesOfferPage = pathname?.includes("offers");
+    const pathNameDefined = !includesOfferPage
+      ? `/offers${pathname}`
+      : pathname;
+
+    router.push(createUrl(pathNameDefined, newParams));
+    router.refresh();
+  };
+
+
   return (
     <Menubar className="rounded-none border-b border-none px-2 lg:px-4 py-8 flex justify-between w-full items-center">
       <div className="flex gap-2 items-center">
@@ -239,6 +176,25 @@ export function Menu() {
             </MenubarSub>
             <MenubarSeparator />
             <MenubarSub>
+              <MenubarSubTrigger>Stores</MenubarSubTrigger>
+              <MenubarSubContent className="w-[230px]">
+                {stores?.map((filter) => (
+                  <MenubarItem
+                    key={filter.id}
+                    onClick={() => handleStoreClick(filter.name)}
+                    className={cn(
+                      "hover:underline text-sm transition-colors duration-300",
+                      selectedFilterValues?.includes(filter.name) &&
+                        "underline decoration-primary underline-offset-4"
+                    )}
+                  >
+                    {filter.name}
+                  </MenubarItem>
+                ))}
+              </MenubarSubContent>
+            </MenubarSub>
+            <MenubarSeparator />
+            <MenubarSub>
               <MenubarSubTrigger>Sort</MenubarSubTrigger>
               <MenubarSubContent className="w-[230px]">
                 {sortOptions.map((sort) => (
@@ -260,13 +216,13 @@ export function Menu() {
             <MenubarSub>
               <MenubarSubTrigger>Categories</MenubarSubTrigger>
               <MenubarSubContent className="w-[230px]">
-                {categories.map((category) => (
+                {categories?.map((category) => (
                   <MenubarItem
-                    key={category.value}
-                    onClick={() => handleCategoryClick(category.value)}
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.name)}
                     className={cn(
                       "hover:underline text-sm transition-colors duration-300",
-                      selectedCategories.includes(category.value) &&
+                      selectedCategories.includes(category.name) &&
                         "underline decoration-primary underline-offset-4"
                     )}
                   >

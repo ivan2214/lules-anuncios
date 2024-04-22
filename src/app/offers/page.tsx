@@ -1,23 +1,29 @@
 import { Separator } from "@/components/ui/separator";
-import { listenNowAlbums } from "./data/albums";
-import { AlbumArtwork } from "./components/albun-artwork";
 import { SearchBar } from "@/components/search-bar";
 import { Suspense } from "react";
 import SearchBarFallback from "@/components/fallbacks/search-bar-fallback";
 import { QueryComponent } from "./components/query-component";
+import { OfferArticle } from "../../components/offer-article";
+import { getOffers } from "@/requestDb/offers";
 
-interface ParamsOffersPageProps {
+export interface ParamsOffersPageProps {
   sort?: string;
   filter?: string;
   category?: string;
   search?: string;
+  store?: string;
+  take?: string;
+  skip?: string;
+  orderBy?: "asc" | "desc";
 }
 
-export default function OffersPage({
+export default async function OffersPage({
   searchParams,
 }: {
   searchParams?: ParamsOffersPageProps;
 }) {
+  const offers = await getOffers(searchParams);
+
   const hasQuery = searchParams && Object.keys(searchParams).length > 0;
 
   return (
@@ -42,14 +48,12 @@ export default function OffersPage({
         <Separator className="my-4" />
 
         <section className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-10 place-items-center">
-          {listenNowAlbums.map((album) => (
-            <AlbumArtwork
-              key={album.name}
-              album={album}
+          {offers.map((offer) => (
+            <OfferArticle
+              key={offer.id}
+              offer={offer}
               className="w-[250px]"
               aspectRatio="portrait"
-              width={250}
-              height={330}
             />
           ))}
         </section>

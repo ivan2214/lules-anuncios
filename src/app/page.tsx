@@ -1,23 +1,11 @@
 import { Populars } from "@/components/populars";
 import { Pricing } from "@/components/pricing";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { madeForYouAlbums } from "./offers/data/albums";
-import { AlbumArtwork } from "./offers/components/albun-artwork";
-
-interface Offers {
-  id: string;
-  image: string;
-  store: string;
-  category: string;
-  location: string;
-  date: string;
-}
+import { MadeForYou } from "@/components/made-for-you";
 
 const page = () => {
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-full w-full gap-y-10">
       <header className="bg-background py-8 px-4 md:px-6">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           <div className="space-y-4 text-center md:text-left">
@@ -49,29 +37,8 @@ const page = () => {
           />
         </div>
       </header>
-      <div className="mt-6 space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">Made for You</h2>
-        <p className="text-sm text-muted-foreground">
-          Your personal playlists. Updated daily.
-        </p>
-      </div>
-      <Separator className="my-4" />
 
-      <ScrollArea>
-        <div className="flex space-x-4 pb-4">
-          {madeForYouAlbums.map((album) => (
-            <AlbumArtwork
-              key={album.name}
-              album={album}
-              className="w-[150px]"
-              aspectRatio="square"
-              width={150}
-              height={150}
-            />
-          ))}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+      <MadeForYou />
 
       <Populars />
 

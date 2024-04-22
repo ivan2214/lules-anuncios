@@ -73,13 +73,13 @@ model Category {
 }
 
 model Plan {
-  id            String      @id @default(cuid())
-  name          String
-  description   String
-  price         Float
-  offersLimit   OffersLimit // Enum para definir los límites de ofertas
-  profilesLimit Int // Límite de perfiles de cliente para este plan
-  isFree        Boolean     @default(true) // Indicates if this is a freetier plan
+  id                   String      @id @default(cuid())
+  name                 String
+  description          String
+  price                Float
+  offersLimit          OffersLimit // Enum para definir los límites de ofertas
+  offerPublishQuantity Int         @default(20) // Cantidad de ofertas que pueden ser publicadas
+  isFree               Boolean     @default(true) // Indicates if this is a freetier plan
 
   stores Store[]
   Offer  Offer[]

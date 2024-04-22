@@ -4,13 +4,7 @@ import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { createUrl } from "@/lib/utils";
-
-interface ParamsOffersPageProps {
-  sort?: string;
-  filter?: string;
-  category?: string;
-  search?: string;
-}
+import { ParamsOffersPageProps } from "../page";
 
 interface QueryComponentProps {
   searchParams?: ParamsOffersPageProps;
@@ -19,7 +13,7 @@ interface QueryComponentProps {
 export const QueryComponent: React.FC<QueryComponentProps> = ({
   searchParams,
 }) => {
-  const { sort, filter, category, search } = searchParams || {};
+  const { sort, filter, category, search, store } = searchParams || {};
   const router = useRouter();
   const pathname = usePathname();
   let categoriesArray = category?.split(",");
@@ -28,7 +22,7 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
     param,
     value,
   }: {
-    param: "category" | "search" | "sort" | "filter";
+    param: "category" | "search" | "sort" | "filter" | "store";
     value?: string;
   }) => {
     const params = { ...searchParams };
@@ -43,6 +37,10 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
 
     if (param === "filter") {
       delete params.filter;
+    }
+
+    if (param === "store") {
+      delete params.store;
     }
 
     if (param === "category" && value) {
@@ -69,6 +67,7 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
     router.push(`${pathname}`);
     router.refresh();
   };
+
   return (
     <div className="flex lg:justify-between lg:items-center lg:flex-row flex-col gap-4 lg:gap-0">
       <div className="mt-4 flex flex-wrap gap-2 w-full">
@@ -154,12 +153,31 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
             </Button>
           </Badge>
         )}
+        {store && (
+          <Badge
+            className="flex items-center justify-between capitalize"
+            variant="outline"
+          >
+            {store}
+            <Button
+              onClick={() =>
+                removeQuery({
+                  param: "store",
+                  value: store,
+                })
+              }
+              variant="ghost"
+              size="icon"
+            >
+              <TrashIcon className="h-4 w-4 text-destructive" />
+            </Button>
+          </Badge>
+        )}
       </div>
       <Button
         className="flex items-center gap-2 w-fit "
         onClick={clearAll}
         variant="destructive"
-        
       >
         Borrar todos
         <TrashIcon className="h-4 w-4" />
