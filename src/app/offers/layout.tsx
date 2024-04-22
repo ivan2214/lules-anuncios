@@ -1,15 +1,17 @@
-import { Menu } from "../../components/menu";
+import { db } from "@/lib/db";
 import { Sidebar } from "./components/sidebar";
-import { playlists } from "./data/playlists";
 
 interface OffersLayoutProps {
   children: React.ReactNode;
 }
 
-const OffersLayout: React.FC<OffersLayoutProps> = ({ children }) => {
+const OffersLayout: React.FC<OffersLayoutProps> = async ({ children }) => {
+  const stores = await db.store.findMany({});
+  const categories = await db.category.findMany({});
+
   return (
     <div className="grid grid-cols-5">
-      <Sidebar playlists={playlists} className="hidden lg:block" />
+      <Sidebar stores={stores} categories={categories} playlists={[]} className="hidden lg:block" />
       {children}
     </div>
   );
