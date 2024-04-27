@@ -75,7 +75,7 @@ export const mockPlan: safePlan[] = [
 
 import { type Category } from "@prisma/client";
 
-type SafeCategory = Omit<Category, "Offers" | "id">;
+type SafeCategory = Omit<Category, "Offers" | "id" | "userId">;
 
 export const categories: SafeCategory[] = [
   {
@@ -237,4 +237,23 @@ export const randomDescriptions: string[] = [
   "Descubre lo último en tecnología y aprovecha nuestra oferta 2x1 en una amplia selección de productos.",
   "Renueva tu estilo con nuestras prendas de moda: llévate 2 y paga solo 1 en artículos de ropa.",
   "Haz deporte con estilo y ahorra: aprovecha nuestra oferta 2x1 en artículos deportivos seleccionados.",
+];
+
+export const randonNamesUsers: string[] = [
+  "John Doe",
+  "Jane Smith",
+  "Michael Johnson",
+  "Emily Davis",
+  "William Brown",
+  "Olivia Wilson",
+  "James Taylor",
+  "Sophia Anderson",
+  "Benjamin Martinez",
+  "Ava Taylor",
+  "Daniel Wilson",
+  "Emma Anderson",
+  "Alexander Johnson",
+  "Charlotte Brown",
+  "Ethan Davis",
+  "Amelia Wilson",
 ];

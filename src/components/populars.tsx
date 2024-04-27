@@ -6,8 +6,17 @@ import { Badge } from "./ui/badge";
 export async function Populars() {
   const categories = await db.category.findMany({
     take: 5,
-    include: {
-      Offers: true,
+    select: {
+      Offers: {
+        select: {
+          images: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      },
+      name: true,
     },
   });
 
@@ -52,11 +61,18 @@ export async function Populars() {
       <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
         {categories.map((category) => (
           <Link
-            className="flex flex-col gap-2 rounded-md border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white p-4"
-            href={`/offers?category=${category.name}`}
+            className="flex flex-col gap-y-4 rounded-md border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white overflow-hidden"
+            href={`/offers?category=${category?.name}`}
             key={category.name}
           >
-            <div className="flex items-center justify-between">
+            <div className="w-full h-32">
+              <img
+                className="w-full h-full object-cover  aspect-square"
+                src={category.Offers[0].images[0].url}
+                alt=""
+              />
+            </div>
+            <div className="flex items-center justify-between p-4">
               <h3 className="text-lg font-semibold">{category.name}</h3>
               <Badge>{category.Offers.length} offers</Badge>
             </div>

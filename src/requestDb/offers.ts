@@ -4,16 +4,17 @@ interface queryParams {
   category?: string;
   search?: string;
   sort?: string;
-  filter?: string;
   take?: string;
   skip?: string;
   orderBy?: "asc" | "desc";
   store?: string;
+  madeForYou?: boolean;
 }
 
 export const getOffers = async (query?: queryParams) => {
   try {
-    const { category, search, orderBy, skip, store, take } = query || {};
+    const { category, search, orderBy, skip, store, take, madeForYou, sort } =
+      query || {};
 
     let categoriesSeparatedByComma: string[] = [];
 

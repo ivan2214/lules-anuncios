@@ -24,7 +24,7 @@ import { FormSucces } from "@components/form-succes";
 import { Loader2Icon, TrashIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ImageUpload from "@/components/image-upload";
-import { createOffer } from "@/actions/offer";
+import { createOffer } from "@/server-actions/offer";
 
 export type OfferFormValues = z.infer<typeof OfferSchema>;
 

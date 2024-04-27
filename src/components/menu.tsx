@@ -91,7 +91,7 @@ export function Menu({categories,stores}: {categories?: Category[],stores?: Stor
     if (updatedCategories.length > 0) {
       newParams.set(
         "category",
-        updatedCategories.map(encodeURIComponent).join(",")
+        updatedCategories.map((category) => category).join(",")
       );
     } else {
       newParams.delete("category");

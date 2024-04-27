@@ -32,6 +32,33 @@ model Store {
   @@index([planId])
 }
 
+// Agregar modelo para usuarios y sus interacciones con ofertas
+model User {
+  id                 String                 @id @default(cuid())
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  name               String
+  email              String                 @unique
+  // Otros campos del usuario como nombre, edad, etc.
+  preferences        String[] // Almacena las preferencias del usuario
+  favoriteCategories Category[] // Almacena las categorías favoritas del usuario
+  interactions       UserOfferInteraction[]
+}
+
+model UserOfferInteraction {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  offer     Offer    @relation(fields: [offerId], references: [id])
+  offerId   String
+  // Otros campos como "liked", "viewed", etc.
+
+  @@index([offerId])
+  @@index([userId])
+}
+
 model Offer {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
@@ -43,11 +70,12 @@ model Offer {
   store   Store  @relation(fields: [storeId], references: [id])
   storeId String
 
-  categories Category[] @relation("OfferToCategory")
-  images     Image[]
-  Chat       Chat[]
-  Plan       Plan?      @relation(fields: [planId], references: [id])
-  planId     String?
+  categories   Category[]             @relation("OfferToCategory")
+  images       Image[]
+  Chat         Chat[]
+  Plan         Plan?                  @relation(fields: [planId], references: [id])
+  planId       String?
+  interactions UserOfferInteraction[]
 
   @@index([storeId])
   @@index([planId])
@@ -70,6 +98,10 @@ model Category {
   name String @unique
 
   Offers Offer[] @relation("OfferToCategory")
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@index([userId])
 }
 
 model Plan {

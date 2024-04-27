@@ -58,11 +58,7 @@ export const createManyOffers = async () => {
       },
     });
 
-    const imageIsAlreadyCreated = await db.image.findFirst({
-      where: {
-        url: randomImage,
-      },
-    });
+   
 
     await db.offer.create({
       data: {

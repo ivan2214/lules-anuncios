@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { createManyOffers } from "./createManyOffers";
+import { createManyUsers } from "./createManyUsers";
 
 const prismaDb = new PrismaClient();
 
 async function main() {
+  await createManyUsers();
   await createManyOffers();
 }
 main()

@@ -3,11 +3,14 @@ import { getOffers } from "@/requestDb/offers";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { OfferArticle } from "@/components/offer-article";
+import { getRecommendedOffers } from "@/actions/user-preferences-recommendations";
 
 interface MadeForYouProps {}
 
+export const revalidate = 60 * 60 * 24;
+
 export const MadeForYou: React.FC<MadeForYouProps> = async () => {
-  const offers = await getOffers({ category: "Made for you", take: 10 });
+  const offers = await getRecommendedOffers("clvhk54bj0002tkg31ya7vjat", 15);
   return (
     <section>
       <div className="mt-6 space-y-1">
@@ -21,7 +24,7 @@ export const MadeForYou: React.FC<MadeForYouProps> = async () => {
       <section>
         <ScrollArea>
           <div className="flex space-x-4 pb-4">
-            {offers.length > 0 &&
+            {offers?.length > 0 &&
               offers?.map((offer) => (
                 <OfferArticle
                   key={offer.id}
