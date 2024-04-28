@@ -4,5 +4,5 @@ export interface OfferExtens extends Offer {
   categories: Category[];
   images: Image[];
   store: Store;
-  Plan: Plan | null;
+  plan: Plan | null;
 }

@@ -8,14 +8,18 @@ export const createManyUsers = async (
 ) => {
   const password = "123456";
   const hashPassword = await bcrypt.hash(password, 10);
-  const users = Array.from({ length: numberOfUsers }).map(() => ({
-    name: faker.person.fullName(),
-    email: faker.internet.email(),
-    image: faker.image.avatar(),
-    role: faker.datatype.boolean() ? UserRole.ADMIN : UserRole.USER,
-    hashPassword,
-    emailVerified: faker.datatype.boolean() ? new Date() : null,
-  }));
 
-  await db.user.createMany({ data: users });
+  for (let i = 0; i < numberOfUsers; i++) {
+    const user = {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      image: faker.image.avatar(),
+      role: faker.datatype.boolean() ? UserRole.ADMIN : UserRole.USER,
+      hashPassword,
+      emailVerified: faker.datatype.boolean() ? new Date() : null,
+    };
+
+    await db.user.create({ data: user });
+    console.log("Creando usuario...", i + 1);
+  }
 };

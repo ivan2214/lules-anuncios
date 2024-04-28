@@ -18,7 +18,8 @@ export const createManyOffers = async () => {
     const randomPlanName = faker.helpers.arrayElement(mockPlan).name;
     const randomPlanDescription = faker.lorem.paragraph();
     const randomPlanPrice = faker.commerce.price();
-    const randomPlanOffersLimit = faker.helpers.arrayElement(mockPlan).offersLimit;
+    const randomPlanOffersLimit =
+      faker.helpers.arrayElement(mockPlan).offersLimit;
     const randomPlanOfferPublishQuantity = faker.number.int({
       min: 1,
       max: 10,
@@ -55,7 +56,7 @@ export const createManyOffers = async () => {
       },
     });
 
-    await db.offer.create({
+    const offer = await db.offer.create({
       data: {
         ...data,
         images: {
@@ -110,6 +111,51 @@ export const createManyOffers = async () => {
         },
       },
     });
+
+    const chat = await db.chat.create({
+      data: {
+        offerId: offer.id,
+        storeId: offer.storeId,
+      },
+    });
+
+    const randomContent = faker.lorem.sentence();
+    const randomSender = faker.datatype.boolean() ? "USER" : "STORE";
+
+    const message = await db.message.create({
+      data: {
+        chatId: chat.id,
+        content: randomContent,
+        sender: randomSender,
+      },
+    });
+
+    await db.chat.update({
+      where: {
+        id: chat.id,
+      },
+      data: {
+        messages: {
+          connect: {
+            id: message.id,
+          },
+        },
+      },
+    });
+
+    await db.offer.update({
+      where: {
+        id: offer.id,
+      },
+      data: {
+        chats: {
+          connect: {
+            id: chat.id,
+          },
+        },
+      },
+    });
+
     console.log("Creando oferta ...", i);
   }
 };

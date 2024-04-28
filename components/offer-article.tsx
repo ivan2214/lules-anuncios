@@ -5,21 +5,21 @@ import ImageSkeleton from "@/components/image-skeleton";
 import Link from "next/link";
 import { OfferExtens } from "@/types/offer";
 import { Badge } from "./ui/badge";
+import { User } from "next-auth";
 
 interface OfferArticleProps extends React.HTMLAttributes<HTMLDivElement> {
   offer: OfferExtens;
   aspectRatio?: "portrait" | "square";
+  userId?: string;
 }
 
 export function OfferArticle({
   offer,
   aspectRatio = "portrait",
   className,
+  userId,
 }: OfferArticleProps) {
-  const handleOfferClick = async () => {
-    // Supongamos que el usuario hace clic en la oferta y queremos actualizar sus preferencias
-    const userId = "clvhk54bj0001tkg3qjflcj4v";
-
+  const handleOfferClick = async (userId?: string) => {
     try {
       await fetch("/api/preferences-users", {
         method: "POST",
@@ -46,7 +46,7 @@ export function OfferArticle({
       <Link
         href="#"
         className="overflow-hidden  rounded-md h-80 w-full"
-        onClick={handleOfferClick}
+        onClick={() => handleOfferClick(userId)}
       >
         <ImageSkeleton
           src={offer?.images[0]?.url || "https://picsum.photos/200"}
@@ -64,7 +64,9 @@ export function OfferArticle({
         <p className="text-xs text-muted-foreground">
           {offer.categories.map((category) => category.name).join(", ")}
         </p>
-        <Badge variant="outline" className="bg-purple-500 text-white">{offer.store.name}</Badge>
+        <Badge variant="outline" className="bg-purple-500 text-white">
+          {offer.store.name}
+        </Badge>
       </div>
     </article>
   );
