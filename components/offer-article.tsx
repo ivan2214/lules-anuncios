@@ -44,7 +44,7 @@ export function OfferArticle({
       className={cn("flex flex-col  justify-between w-full gap-y-5", className)}
     >
       <Link
-        href="#"
+        href={`/offer/${offer.id}`}
         className="overflow-hidden  rounded-md h-80 w-full"
         onClick={() => handleOfferClick(userId)}
       >

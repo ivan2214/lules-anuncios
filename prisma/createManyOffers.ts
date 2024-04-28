@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { db } from "../lib/db";
 import { mockPlan } from "./mocks";
+import { MessageSender } from "@prisma/client";
 
 export const createManyOffers = async () => {
   for (let i = 0; i < 45; i++) {
@@ -15,6 +16,7 @@ export const createManyOffers = async () => {
     const randomStorePostalCode = faker.location.zipCode();
     const randomStoreEmail = faker.internet.email();
     const randomStoreVerified = faker.datatype.boolean();
+    const randomStoreImage = faker.image.urlPicsumPhotos();
     const randomPlanName = faker.helpers.arrayElement(mockPlan).name;
     const randomPlanDescription = faker.lorem.paragraph();
     const randomPlanPrice = faker.commerce.price();
@@ -91,6 +93,7 @@ export const createManyOffers = async () => {
               postalCode: randomStorePostalCode,
               email: randomStoreEmail,
               verified: randomStoreVerified,
+              image: randomStoreImage
             },
           },
         },
@@ -109,52 +112,31 @@ export const createManyOffers = async () => {
             },
           },
         },
-      },
-    });
-
-    const chat = await db.chat.create({
-      data: {
-        offerId: offer.id,
-        storeId: offer.storeId,
-      },
-    });
-
-    const randomContent = faker.lorem.sentence();
-    const randomSender = faker.datatype.boolean() ? "USER" : "STORE";
-
-    const message = await db.message.create({
-      data: {
-        chatId: chat.id,
-        content: randomContent,
-        sender: randomSender,
-      },
-    });
-
-    await db.chat.update({
-      where: {
-        id: chat.id,
-      },
-      data: {
-        messages: {
-          connect: {
-            id: message.id,
+        chat: {
+          create: {
+            storeId: storeIsAlreadyCreated?.id ?? "",
           },
         },
       },
+      include: {
+        chat: true,
+      },
     });
 
-    await db.offer.update({
-      where: {
-        id: offer.id,
-      },
-      data: {
-        chats: {
-          connect: {
-            id: chat.id,
-          },
+    for (let i = 0; i < faker.number.int({ min: 1, max: 10 }); i++) {
+      const randomSender = faker.datatype.boolean()
+        ? MessageSender.STORE
+        : MessageSender.USER;
+      const randomMessage = faker.lorem.paragraph();
+
+      await db.message.create({
+        data: {
+          sender: randomSender,
+          content: randomMessage,
+          chatId: offer.chat.id,
         },
-      },
-    });
+      });
+    }
 
     console.log("Creando oferta ...", i);
   }

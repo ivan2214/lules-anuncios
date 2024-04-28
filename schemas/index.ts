@@ -1,3 +1,4 @@
+import { MessageSender } from "@prisma/client";
 import * as z from "zod";
 
 export const OfferSchema = z.object({
@@ -20,4 +21,10 @@ export const RegisterSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters" }),
   name: z.string().min(1, { message: "Name is required" }),
+});
+
+export const MessageSchema = z.object({
+  content: z.string().min(1, { message: "Please enter a message" }),
+  chatId: z.string().cuid({ message: "Chat id is required" }),
+  sender: z.enum([MessageSender.STORE, MessageSender.USER]),
 });

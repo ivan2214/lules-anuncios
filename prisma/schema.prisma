@@ -111,15 +111,19 @@ model Offer {
   store   Store  @relation(fields: [storeId], references: [id])
   storeId String
 
-  categories   Category[]             @relation("OfferToCategory")
-  images       Image[]
-  chats        Chat[]
-  plan         Plan?                  @relation(fields: [planId], references: [id])
-  planId       String?
+  categories Category[] @relation("OfferToCategory")
+  images     Image[]
+  chat       Chat       @relation(fields: [chatId], references: [id]) // Cambiamos chats por chat y hacemos que sea opcional
+  chatId     String
+
+  plan   Plan?   @relation(fields: [planId], references: [id])
+  planId String?
+
   interactions UserOfferInteraction[]
 
   @@index([storeId])
   @@index([planId])
+  @@index([chatId])
 }
 
 model Image {
@@ -168,13 +172,10 @@ model Chat {
   store   Store  @relation(fields: [storeId], references: [id])
   storeId String
 
-  offer   Offer?  @relation(fields: [offerId], references: [id], onDelete: Cascade)
-  offerId String?
-
   messages Message[]
+  Offer    Offer[]
 
-  @@index([offerId])
-  @@index([storeId])
+  @@index([storeId], name: "store_index") // Añadimos un nombre personalizado al índice
   @@map("chats")
 }
 
@@ -188,7 +189,7 @@ model Message {
 
   sender MessageSender @default(USER)
 
-  @@index([chatId])
+  @@index([chatId], name: "chat_index") // Añadimos un nombre personalizado al índice
   @@map("messages")
 }
 
