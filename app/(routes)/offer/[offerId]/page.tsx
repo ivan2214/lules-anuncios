@@ -19,6 +19,12 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
 
   const offer = await getOffer(offerId);
 
+  const chat= offer?.chat
+
+  const messages= chat?.messages
+
+  console.log({messages});
+  
 
   if (!offer) {
     return null;
@@ -135,7 +141,7 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
         </div>
       </section>
       <section className="container flex items-start gap-8 px-4 md:px-6">
-        <ChatContent store={offer?.store} chat={offer?.chat} />
+        <ChatContent store={offer?.store} chat={chat} />
       </section>
     </section>
   );

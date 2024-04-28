@@ -25,7 +25,8 @@ export const RegisterSchema = z.object({
 
 export const MessageSchema = z.object({
   content: z.string().min(1, { message: "Please enter a message" }),
-  chatId: z.string().cuid({ message: "Chat id is required" }),
   sender: z.enum([MessageSender.STORE, MessageSender.USER]),
-  userId: z.string().cuid({ message: "User id is required" }),
+  senderId: z.string().cuid({ message: "Sender id is required" }),
+  chatId: z.string().cuid().optional(),
+  storeId: z.string().cuid().optional(),
 });

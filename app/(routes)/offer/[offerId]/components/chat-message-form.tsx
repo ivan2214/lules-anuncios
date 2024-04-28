@@ -17,12 +17,13 @@ import { SendIcon } from "lucide-react";
 import { MessageSender } from "@prisma/client";
 import { sendComment } from "@/actions/send-comment";
 import { useTransition } from "react";
-import { revalidatePath } from "next/cache";
+
 
 interface ChatMessageForrmProps {
-  chatId: string;
+  chatId?: string;
   sender: MessageSender;
-  userId?: string;
+  senderId?: string;
+  storeId?: string;
 }
 
 export type MessageFormValues = z.infer<typeof MessageSchema>;
@@ -30,15 +31,18 @@ export type MessageFormValues = z.infer<typeof MessageSchema>;
 export const ChatMessageForrm: React.FC<ChatMessageForrmProps> = ({
   chatId,
   sender,
-  userId
+  senderId,
+  storeId,
 }) => {
   const [isPending, startTransition] = useTransition();
+
   const form = useForm<MessageFormValues>({
     defaultValues: {
       content: "",
       sender: sender,
       chatId: chatId,
-      userId: userId,
+      senderId: senderId || "",
+      storeId: storeId || "",
     },
     resolver: zodResolver(MessageSchema),
   });
