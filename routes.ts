@@ -4,7 +4,7 @@
  * @type {string[]}
  */
 
-export const publicRoutes = ["/", "/auth/new-verification", "/offers"];
+export const publicRoutes = ["/", "/auth/new-verification", "/offers","/offer/[offerId]"];
 
 /**
  * An array of routes that are used for authentication
@@ -27,4 +27,4 @@ export const apiAuthPrefix = "/api/auth";
  * @type {string}
  */
 
-export const DEFAULT_LOGIN_REDIRECT = "/offers";
+export const DEFAULT_LOGIN_REDIRECT = "/account";
