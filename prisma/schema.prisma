@@ -22,40 +22,37 @@ model Store {
   address    String
   city       String
   postalCode String
+  email      String   @unique
+  phone      String?
+  image      String?
+  verified   Boolean  @default(false)
 
   plan   Plan?   @relation(fields: [planId], references: [id])
   planId String?
 
-  Offers Offer[]
-  Chat   Chat[]
+  offers Offer[]
+  chats  Chat[]
 
   @@index([planId])
 }
 
-// Agregar modelo para usuarios y sus interacciones con ofertas
 model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  email         String    @unique
-  name          String?
-  emailVerified DateTime?
-  hashPassword  String?
-  image         String?
-
+  id                 String                 @id @default(cuid())
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  email              String                 @unique
+  name               String?
+  emailVerified      DateTime?
+  hashPassword       String?
+  image              String?
   preferences        String[] // Almacena las preferencias del usuario
-  favoriteCategories Category[] // Almacena las categorías favoritas del usuario
+  // Agregado: Campo para las categorías favoritas del usuario
+  favoriteCategories Category[]             @relation("UserFavoriteCategories")
   interactions       UserOfferInteraction[]
   accounts           Account[]
-
-  role UserRole @default(USER)
+  role               UserRole               @default(USER)
 
   @@map("users")
-}
-
-enum UserRole {
-  USER
-  ADMIN
 }
 
 model Account {
@@ -116,14 +113,13 @@ model Offer {
 
   categories   Category[]             @relation("OfferToCategory")
   images       Image[]
-  Chat         Chat[]
-  Plan         Plan?                  @relation(fields: [planId], references: [id])
+  chats        Chat[]
+  plan         Plan?                  @relation(fields: [planId], references: [id])
   planId       String?
   interactions UserOfferInteraction[]
 
   @@index([storeId])
   @@index([planId])
-  @@map("offers")
 }
 
 model Image {
@@ -132,22 +128,20 @@ model Image {
   updatedAt DateTime @updatedAt
   url       String
 
-  Offer   Offer?  @relation(fields: [OfferId], references: [id], onDelete: Cascade)
-  OfferId String?
+  offer   Offer?  @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerId String?
 
-  @@index([OfferId])
+  @@index([offerId])
   @@map("images")
 }
 
 model Category {
-  id   String @id @default(cuid())
-  name String @unique
+  id     String  @id @default(cuid())
+  name   String  @unique
+  // Agregado: Relación con usuarios para las categorías favoritas
+  users  User[]  @relation("UserFavoriteCategories")
+  offers Offer[] @relation("OfferToCategory")
 
-  Offers Offer[] @relation("OfferToCategory")
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  @@index([userId])
   @@map("categories")
 }
 
@@ -158,19 +152,12 @@ model Plan {
   price                Float
   offersLimit          OffersLimit // Enum para definir los límites de ofertas
   offerPublishQuantity Int         @default(20) // Cantidad de ofertas que pueden ser publicadas
-  isFree               Boolean     @default(true) // Indicates if this is a freetier plan
+  isFree               Boolean     @default(true) // Indica si este es un plan gratuito
 
   stores Store[]
-  Offer  Offer[]
+  offers Offer[]
 
   @@map("plans")
-}
-
-enum OffersLimit {
-  FREETIER_20
-  BASIC_50
-  PRO_100
-  ENTERPRISE_UNLIMITED
 }
 
 model Chat {
@@ -181,8 +168,8 @@ model Chat {
   store   Store  @relation(fields: [storeId], references: [id])
   storeId String
 
-  Offer   Offer? @relation(fields: [offerId], references: [id], onDelete: Cascade)
-  offerId String
+  offer   Offer?  @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerId String?
 
   messages Message[]
 
@@ -205,7 +192,19 @@ model Message {
   @@map("messages")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 enum MessageSender {
   USER
   STORE
+}
+
+enum OffersLimit {
+  FREETIER_20
+  BASIC_50
+  PRO_100
+  ENTERPRISE_UNLIMITED
 }

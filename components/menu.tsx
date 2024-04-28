@@ -1,15 +1,10 @@
 "use client";
 import {
   Menubar,
-  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
-  MenubarLabel,
   MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarSub,
   MenubarSubContent,
   MenubarSubTrigger,
@@ -22,9 +17,10 @@ import UserMenu from "./user-menu";
 import { SearchBar } from "./search-bar";
 import { Suspense } from "react";
 import SearchBarFallback from "./fallbacks/search-bar-fallback";
-import { Category, Store, User } from "@prisma/client";
-import AuthButtons from "./auth-options";
+import { Category, Store } from "@prisma/client";
+import AuthButtons from "@/components/auth-options";
 import { Session } from "next-auth";
+import { Button } from "@/components/ui/button";
 
 const filterOptions = [
   {
@@ -85,7 +81,6 @@ export function Menu({
   const selectedFilterValues = searchParams.get("filter");
   const router = useRouter();
   const { user } = session || {};
-  const { id, role, email, image, name } = user || {};
 
   const handleCategoryClick = (categoryValue: string) => {
     const newParams = new URLSearchParams(searchParams?.toString());
@@ -248,9 +243,17 @@ export function Menu({
           <SearchBar />
         </Suspense>
         {!user && <AuthButtons />}
-        {
-          user && <UserMenu user={user} />
-        }
+        {user && (
+          <Button>
+            <Link
+              className="flex items-center gap-2 text-base font-light"
+              href="/create-offer"
+            >
+              Crear oferta
+            </Link>
+          </Button>
+        )}
+        {user && <UserMenu user={user} />}
       </section>
     </Menubar>
   );

@@ -10,6 +10,7 @@ import Link from "next/link";
 import Icon, { IconProps } from "../ui/icon";
 import { Separator } from "../ui/separator";
 import { User } from "next-auth";
+import { signOut } from "next-auth/react";
 
 export interface Route {
   name: string;
@@ -67,14 +68,7 @@ const UserMenu = ({ user }: { user: User }) => {
               </Link>
             ))}
             <Separator />
-            <Button >
-              <Link
-                className="flex items-center gap-2 text-base font-light"
-                href="/create-offer"
-              >
-                Crear oferta
-              </Link>
-            </Button>
+            <Button onClick={() => signOut()}>Cerrar sesión</Button>
           </div>
         </div>
       </PopoverContent>

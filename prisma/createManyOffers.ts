@@ -1,71 +1,71 @@
+import { faker } from "@faker-js/faker";
 import { db } from "../lib/db";
-import {
-  categories,
-  images,
-  mockPlan,
-  mockStore,
-  randomDescriptions,
-  randomPrices,
-  randonNameOffers,
-} from "./mocks";
+import { mockPlan } from "./mocks";
 
 export const createManyOffers = async () => {
   for (let i = 0; i < 45; i++) {
-    const randomStore =
-      mockStore[Math.floor(Math.random() * mockStore?.length)];
-
-    const randomPlan = mockPlan[Math.floor(Math.random() * mockPlan?.length)];
-
-    const randomName =
-      randonNameOffers[Math.floor(Math.random() * randonNameOffers?.length)];
-
-    const randomPrice =
-      randomPrices[Math.floor(Math.random() * randomPrices?.length)];
-
-    const randomDescription =
-      randomDescriptions[
-        Math.floor(Math.random() * randomDescriptions?.length)
-      ];
-
-    const randomImage = images[Math.floor(Math.random() * images?.length)].url;
-
-    const randomCategory =
-      categories[Math.floor(Math.random() * categories?.length)];
-
- 
+    const randomName = faker.commerce.productName();
+    const randomPrice = faker.commerce.price();
+    const randomDescription = faker.lorem.sentence();
+    const randomImage = faker.image.urlPicsumPhotos();
+    const randomCategory = faker.commerce.department();
+    const randomStoreName = faker.company.name();
+    const randomStoreAddress = faker.location.streetAddress();
+    const randomStoreCity = faker.location.city();
+    const randomStorePostalCode = faker.location.zipCode();
+    const randomStoreEmail = faker.internet.email();
+    const randomStoreVerified = faker.datatype.boolean();
+    const randomPlanName = faker.helpers.arrayElement(mockPlan).name;
+    const randomPlanDescription = faker.lorem.paragraph();
+    const randomPlanPrice = faker.commerce.price();
+    const randomPlanOffersLimit = faker.helpers.arrayElement(mockPlan).offersLimit;
+    const randomPlanOfferPublishQuantity = faker.number.int({
+      min: 1,
+      max: 10,
+    });
+    const randomPlanIsFree = faker.helpers.arrayElement(mockPlan).isFree;
 
     const data = {
       title: randomName,
-      price: randomPrice,
+      price: Number(randomPrice),
       description: randomDescription,
     };
 
     const categorieIsAlreadyCreated = await db.category.findFirst({
       where: {
-        name: randomCategory.name,
+        name: randomCategory,
       },
     });
 
     const storeIsAlreadyCreated = await db.store.findFirst({
       where: {
-        name: randomStore.name,
+        name: randomStoreName,
       },
     });
 
     const planIsAlreadyCreated = await db.plan.findFirst({
       where: {
-        name: randomPlan.name,
+        name: randomPlanName,
       },
     });
 
-   
+    const imageIsAlreadyCreated = await db.image.findFirst({
+      where: {
+        url: randomImage,
+      },
+    });
 
     await db.offer.create({
       data: {
         ...data,
         images: {
-          create: {
-            url: randomImage,
+          connectOrCreate: {
+            where: {
+              id: imageIsAlreadyCreated?.id ?? "",
+            },
+            create: {
+              url: randomImage,
+            },
           },
         },
         categories: {
@@ -74,7 +74,7 @@ export const createManyOffers = async () => {
               id: categorieIsAlreadyCreated?.id ?? "",
             },
             create: {
-              name: randomCategory.name,
+              name: randomCategory,
             },
           },
         },
@@ -84,31 +84,32 @@ export const createManyOffers = async () => {
               id: storeIsAlreadyCreated?.id ?? "",
             },
             create: {
-              name: randomStore.name,
-              address: randomStore.address,
-              city: randomStore.city,
-              postalCode: randomStore.postalCode,
+              name: randomStoreName,
+              address: randomStoreAddress,
+              city: randomStoreCity,
+              postalCode: randomStorePostalCode,
+              email: randomStoreEmail,
+              verified: randomStoreVerified,
             },
           },
         },
-        Plan: {
+        plan: {
           connectOrCreate: {
             where: {
               id: planIsAlreadyCreated?.id ?? "",
             },
             create: {
-              name: randomPlan.name,
-              description: randomPlan.description,
-              price: randomPlan.price,
-              offersLimit: randomPlan.offersLimit,
-              offerPublishQuantity: randomPlan.offerPublishQuantity,
-              isFree: randomPlan.isFree,
+              name: randomPlanName,
+              description: randomPlanDescription,
+              price: Number(randomPlanPrice),
+              offersLimit: randomPlanOffersLimit,
+              offerPublishQuantity: randomPlanOfferPublishQuantity,
+              isFree: randomPlanIsFree,
             },
           },
         },
       },
     });
     console.log("Creando oferta ...", i);
-    
   }
 };

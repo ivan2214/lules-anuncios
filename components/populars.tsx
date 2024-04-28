@@ -7,7 +7,7 @@ export async function Populars() {
   const categories = await db.category.findMany({
     take: 5,
     select: {
-      Offers: {
+      offers: {
         select: {
           images: {
             select: {
@@ -26,7 +26,7 @@ export async function Populars() {
       createdAt: "desc",
     },
     include: {
-      Offers: true,
+      offers: true,
     },
   });
   return (
@@ -45,7 +45,7 @@ export async function Populars() {
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">{store.name}</h3>
-              <Badge>{store.Offers.length} offers</Badge>
+              <Badge>{store.offers.length} offers</Badge>
             </div>
             <p className="text-sm text-muted-foreground">
               {store.address}, {store.city}
@@ -68,13 +68,13 @@ export async function Populars() {
             <div className="w-full h-32">
               <img
                 className="w-full h-full object-cover  aspect-square"
-                src={category.Offers[0].images[0].url}
+                src={category.offers[0].images[0].url}
                 alt=""
               />
             </div>
             <div className="flex items-center justify-between p-4">
               <h3 className="text-lg font-semibold">{category.name}</h3>
-              <Badge>{category.Offers.length} offers</Badge>
+              <Badge>{category.offers.length} offers</Badge>
             </div>
           </Link>
         ))}

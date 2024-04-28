@@ -1,13 +1,13 @@
+import { faker } from "@faker-js/faker";
 import { db } from "../lib/db";
-import { randonNamesUsers } from "./mocks";
 
-export const createManyUsers = async () => {
-  // Crea un array de objetos que representan los usuarios que deseas crear
-  const users = randonNamesUsers.map((name) => ({
-    name,
-    email: `${name}@example.com`,
+export const createManyUsers = async (
+  numberOfUsers: number | undefined = 55
+) => {
+  const users = Array.from({ length: numberOfUsers }).map(() => ({
+    name: faker.person.fullName(),
+    email: faker.internet.email(),
   }));
 
-  // Crea los usuarios en la base de datos
   await db.user.createMany({ data: users });
 };

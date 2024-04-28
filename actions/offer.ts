@@ -1,6 +1,7 @@
 "use server";
 
-import { OfferFormValues } from "@/app/create-offer/components/create-offer-form";
+
+import { OfferFormValues } from "@/app/(routes)/create-offer/components/create-offer-form";
 import { db } from "@/lib/db";
 import { OfferSchema } from "@/schemas";
 import { Image, Offer } from "@prisma/client";
