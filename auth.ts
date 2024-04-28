@@ -53,6 +53,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.role = token.role;
       }
 
+      if (token.accounts && session.user) {
+        session.user.accounts = token.accounts;
+      }
+
       return session;
     },
     async jwt({ token }) {
@@ -62,6 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.accounts = existingUser.accounts;
 
       return token;
     },

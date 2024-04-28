@@ -1,0 +1,11 @@
+*.config
+*.config.js
+*.config.mjs
+*.config.ts
+*.config.cjs
+*.config.mts
+*.config.cts
+*.config.d.ts
+*.config.d.mts
+*.config.d.cts
+*.config.d.ts
