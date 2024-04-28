@@ -1,5 +1,4 @@
-import { User } from "@prisma/client";
-import { db } from "../src/lib/db";
+import { db } from "../lib/db";
 import { randonNamesUsers } from "./mocks";
 
 export const createManyUsers = async () => {
