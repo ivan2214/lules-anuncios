@@ -13,13 +13,14 @@ export const sendComment = async (values: MessageFormValues) => {
     return { error: "Invalid fields!" };
   }
 
-  const { chatId, content, sender } = validatedFields.data;
+  const { chatId, content, sender, userId } = validatedFields.data;
 
   const message = await db.message.create({
     data: {
       content,
       sender,
       chatId,
+      userId,
     },
   });
 

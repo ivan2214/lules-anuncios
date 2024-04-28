@@ -22,6 +22,7 @@ import { revalidatePath } from "next/cache";
 interface ChatMessageForrmProps {
   chatId: string;
   sender: MessageSender;
+  userId?: string;
 }
 
 export type MessageFormValues = z.infer<typeof MessageSchema>;
@@ -29,13 +30,15 @@ export type MessageFormValues = z.infer<typeof MessageSchema>;
 export const ChatMessageForrm: React.FC<ChatMessageForrmProps> = ({
   chatId,
   sender,
+  userId
 }) => {
   const [isPending, startTransition] = useTransition();
   const form = useForm<MessageFormValues>({
     defaultValues: {
       content: "",
-      sender: sender === "USER" ? MessageSender.USER : MessageSender.STORE,
-      chatId: chatId || "",
+      sender: sender,
+      chatId: chatId,
+      userId: userId,
     },
     resolver: zodResolver(MessageSchema),
   });

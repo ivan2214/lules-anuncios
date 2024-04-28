@@ -27,4 +27,5 @@ export const MessageSchema = z.object({
   content: z.string().min(1, { message: "Please enter a message" }),
   chatId: z.string().cuid({ message: "Chat id is required" }),
   sender: z.enum([MessageSender.STORE, MessageSender.USER]),
+  userId: z.string().cuid({ message: "User id is required" }),
 });

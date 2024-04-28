@@ -1,51 +1,29 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN', 'ANNONYMOUS');
 
-  - You are about to drop the `Account` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Category` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Chat` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Image` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Message` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Offer` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Plan` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Session` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `UserOfferInteraction` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `VerificationToken` table. If the table is not empty, all the data it contains will be lost.
+-- CreateEnum
+CREATE TYPE "MessageSender" AS ENUM ('USER', 'STORE');
 
-*/
--- DropTable
-DROP TABLE "Account";
+-- CreateEnum
+CREATE TYPE "OffersLimit" AS ENUM ('FREETIER_20', 'BASIC_50', 'PRO_100', 'ENTERPRISE_UNLIMITED');
 
--- DropTable
-DROP TABLE "Category";
+-- CreateTable
+CREATE TABLE "Store" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "name" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "postalCode" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "image" TEXT,
+    "verified" BOOLEAN NOT NULL DEFAULT false,
+    "planId" TEXT,
 
--- DropTable
-DROP TABLE "Chat";
-
--- DropTable
-DROP TABLE "Image";
-
--- DropTable
-DROP TABLE "Message";
-
--- DropTable
-DROP TABLE "Offer";
-
--- DropTable
-DROP TABLE "Plan";
-
--- DropTable
-DROP TABLE "Session";
-
--- DropTable
-DROP TABLE "User";
-
--- DropTable
-DROP TABLE "UserOfferInteraction";
-
--- DropTable
-DROP TABLE "VerificationToken";
+    CONSTRAINT "Store_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -58,16 +36,18 @@ CREATE TABLE "users" (
     "hashPassword" TEXT,
     "image" TEXT,
     "preferences" TEXT[],
+    "role" "UserRole" NOT NULL DEFAULT 'ANNONYMOUS',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "accounts" (
-    "userId" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
-    "providerAccountId" TEXT NOT NULL,
+    "provider_account_id" TEXT NOT NULL,
     "refresh_token" TEXT,
     "access_token" TEXT,
     "expires_at" INTEGER,
@@ -75,28 +55,18 @@ CREATE TABLE "accounts" (
     "scope" TEXT,
     "id_token" TEXT,
     "session_state" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "accounts_pkey" PRIMARY KEY ("provider","providerAccountId")
+    CONSTRAINT "accounts_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "sessions" (
-    "sessionToken" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "expires" TIMESTAMP(3) NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "verificationtokens" (
-    "identifier" TEXT NOT NULL,
+CREATE TABLE "VerificationToken" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "verificationtokens_pkey" PRIMARY KEY ("identifier","token")
+    CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -111,7 +81,7 @@ CREATE TABLE "userofferinteractions" (
 );
 
 -- CreateTable
-CREATE TABLE "offers" (
+CREATE TABLE "Offer" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -119,9 +89,10 @@ CREATE TABLE "offers" (
     "description" TEXT,
     "price" DOUBLE PRECISION,
     "storeId" TEXT NOT NULL,
+    "chatId" TEXT NOT NULL,
     "planId" TEXT,
 
-    CONSTRAINT "offers_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Offer_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -130,7 +101,7 @@ CREATE TABLE "images" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "url" TEXT NOT NULL,
-    "OfferId" TEXT,
+    "offerId" TEXT,
 
     CONSTRAINT "images_pkey" PRIMARY KEY ("id")
 );
@@ -139,7 +110,6 @@ CREATE TABLE "images" (
 CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "userId" TEXT,
 
     CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
 );
@@ -163,7 +133,6 @@ CREATE TABLE "chats" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "storeId" TEXT NOT NULL,
-    "offerId" TEXT NOT NULL,
 
     CONSTRAINT "chats_pkey" PRIMARY KEY ("id")
 );
@@ -176,21 +145,44 @@ CREATE TABLE "messages" (
     "content" TEXT NOT NULL,
     "chatId" TEXT NOT NULL,
     "sender" "MessageSender" NOT NULL DEFAULT 'USER',
+    "userId" TEXT,
+    "storeId" TEXT NOT NULL,
 
     CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "_UserFavoriteCategories" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_OfferToCategory" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Store_email_key" ON "Store"("email");
+
+-- CreateIndex
+CREATE INDEX "Store_planId_idx" ON "Store"("planId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE INDEX "accounts_userId_idx" ON "accounts"("userId");
+CREATE INDEX "accounts_user_id_idx" ON "accounts"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "sessions_sessionToken_key" ON "sessions"("sessionToken");
+CREATE UNIQUE INDEX "accounts_provider_provider_account_id_key" ON "accounts"("provider", "provider_account_id");
 
 -- CreateIndex
-CREATE INDEX "sessions_userId_idx" ON "sessions"("userId");
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_email_token_key" ON "VerificationToken"("email", "token");
 
 -- CreateIndex
 CREATE INDEX "userofferinteractions_offerId_idx" ON "userofferinteractions"("offerId");
@@ -199,25 +191,40 @@ CREATE INDEX "userofferinteractions_offerId_idx" ON "userofferinteractions"("off
 CREATE INDEX "userofferinteractions_userId_idx" ON "userofferinteractions"("userId");
 
 -- CreateIndex
-CREATE INDEX "offers_storeId_idx" ON "offers"("storeId");
+CREATE INDEX "Offer_storeId_idx" ON "Offer"("storeId");
 
 -- CreateIndex
-CREATE INDEX "offers_planId_idx" ON "offers"("planId");
+CREATE INDEX "Offer_planId_idx" ON "Offer"("planId");
 
 -- CreateIndex
-CREATE INDEX "images_OfferId_idx" ON "images"("OfferId");
+CREATE INDEX "Offer_chatId_idx" ON "Offer"("chatId");
+
+-- CreateIndex
+CREATE INDEX "images_offerId_idx" ON "images"("offerId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_name_key" ON "categories"("name");
 
 -- CreateIndex
-CREATE INDEX "categories_userId_idx" ON "categories"("userId");
+CREATE INDEX "store_index" ON "chats"("storeId");
 
 -- CreateIndex
-CREATE INDEX "chats_offerId_idx" ON "chats"("offerId");
+CREATE INDEX "messages_userId_idx" ON "messages"("userId");
 
 -- CreateIndex
-CREATE INDEX "chats_storeId_idx" ON "chats"("storeId");
+CREATE INDEX "messages_storeId_idx" ON "messages"("storeId");
 
 -- CreateIndex
-CREATE INDEX "messages_chatId_idx" ON "messages"("chatId");
+CREATE INDEX "chat_index" ON "messages"("chatId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_UserFavoriteCategories_AB_unique" ON "_UserFavoriteCategories"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_UserFavoriteCategories_B_index" ON "_UserFavoriteCategories"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_OfferToCategory_AB_unique" ON "_OfferToCategory"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_OfferToCategory_B_index" ON "_OfferToCategory"("B");

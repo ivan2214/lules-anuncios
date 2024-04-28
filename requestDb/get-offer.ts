@@ -12,11 +12,20 @@ export const getOffer = async (offerId: string) => {
         images: true,
         chat: {
           include: {
-            messages: true,
+            store: true,
+            messages: {
+              include: {
+                user: true,
+                store: true,
+              },
+            },
           },
         },
       },
     });
+
+    console.log("offer", offer);
+    
     return offer;
   } catch (error) {
     console.error(error);

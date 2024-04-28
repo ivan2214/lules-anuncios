@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Offer" ALTER COLUMN "planId" DROP NOT NULL;

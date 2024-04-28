@@ -30,8 +30,9 @@ model Store {
   plan   Plan?   @relation(fields: [planId], references: [id])
   planId String?
 
-  offers Offer[]
-  chats  Chat[]
+  messages Message[]
+  offers   Offer[]
+  chats    Chat[]
 
   @@index([planId])
 }
@@ -50,7 +51,8 @@ model User {
   favoriteCategories Category[]             @relation("UserFavoriteCategories")
   interactions       UserOfferInteraction[]
   accounts           Account[]
-  role               UserRole               @default(USER)
+  role               UserRole               @default(ANNONYMOUS)
+  messages           Message[]
 
   @@map("users")
 }
@@ -188,7 +190,14 @@ model Message {
   chatId    String
 
   sender MessageSender @default(USER)
+  user   User?         @relation(fields: [userId], references: [id])
+  userId String?
 
+  store   Store? @relation(fields: [storeId], references: [id])
+  storeId String?
+
+  @@index([userId])
+  @@index([storeId])
   @@index([chatId], name: "chat_index") // Añadimos un nombre personalizado al índice
   @@map("messages")
 }
@@ -196,6 +205,7 @@ model Message {
 enum UserRole {
   USER
   ADMIN
+  ANNONYMOUS
 }
 
 enum MessageSender {
