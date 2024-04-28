@@ -1,4 +1,4 @@
-import { CreateOfferForm } from "./components/create-offer-form";
+import { CreateOfferForm } from "@/app/(routes)/create-offer/components/create-offer-form";
 
 const CreateOfferPage = () => {
   return (

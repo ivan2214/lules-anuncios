@@ -2,9 +2,10 @@ import { Separator } from "@/components/ui/separator";
 import { SearchBar } from "@/components/search-bar";
 import { Suspense } from "react";
 import SearchBarFallback from "@/components/fallbacks/search-bar-fallback";
-import { QueryComponent } from "./components/query-component";
-import { OfferArticle } from "../../components/offer-article";
+
 import { getOffers } from "@/requestDb/offers";
+import { OfferArticle } from "@/components/offer-article";
+import { QueryComponent } from "@/app/(routes)/offers/components/query-component";
 
 export interface ParamsOffersPageProps {
   sort?: string;

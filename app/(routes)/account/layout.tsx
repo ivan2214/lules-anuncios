@@ -1,5 +1,5 @@
 import { type Metadata } from "next";
-import { SidebarNav } from "./components/sidebar-nav";
+import { SidebarNav } from "@/app/(routes)/account/components/sidebar-nav";
 import { Separator } from "@/components/ui/separator";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";

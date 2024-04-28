@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { redirect } from "next/navigation";
 import React from "react";
-import ChangeImage from "./components/change-image";
+import ChangeImage from "@/app/(routes)/account/components/change-image";
 
 const ProfilePage = async () => {
   const session = await auth();
@@ -27,19 +27,6 @@ const ProfilePage = async () => {
 
   return (
     <div className="space-y-6 lg:max-w-2xl">
-      <div>
-        <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">
-          This is how others will see you on the site.
-        </p>
-      </div>
-      <Separator />
-      <div>
-        <h3 className="text-lg font-medium">Account</h3>
-        <p className="text-sm text-muted-foreground">
-          Manage your preferences and security settings.
-        </p>
-      </div>
       <section className="w-full">
         <div className="grid gap-6 sm:grid-cols-2">
           <ChangeImage user={user} />

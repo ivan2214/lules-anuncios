@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Sidebar } from "./components/sidebar";
+import { Sidebar } from "@/app/(routes)/offers/components/sidebar";
 
 interface OffersLayoutProps {
   children: React.ReactNode;

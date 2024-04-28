@@ -60,8 +60,6 @@ export const getOffers = async (query?: queryParams) => {
       },
     });
 
-    console.log("offers", offers);
-
     return offers;
   } catch (error) {
     // Manejar el error de manera adecuada, ya sea registrándolo, notificándolo al usuario, etc.
