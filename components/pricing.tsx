@@ -8,8 +8,11 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChartIcon, CheckIcon, ShareIcon, UsersIcon } from "lucide-react";
+import { db } from "@/lib/db";
 
-export function Pricing() {
+export async function Pricing() {
+  const plans = await db.plan.findMany();
+
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
       <div className="grid gap-10  md:gap-16 md:grid-cols-3">
@@ -23,123 +26,41 @@ export function Pricing() {
             </p>
           </div>
           <div className="grid gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Basic</CardTitle>
-                <CardDescription>
-                  For small teams or individuals.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-baseline justify-center space-x-2">
-                  <span className="text-4xl font-bold">$19</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    /month
-                  </span>
-                </div>
-                <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Publish up to 10 offers
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Manage up to 50 client profiles
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Basic analytics
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" size="lg">
-                  Get Started
-                </Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Pro</CardTitle>
-                <CardDescription>
-                  For growing teams and businesses.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-baseline justify-center space-x-2">
-                  <span className="text-4xl font-bold">$49</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    /month
-                  </span>
-                </div>
-                <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Publish up to 50 offers
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Manage up to 500 client profiles
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Advanced analytics
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Custom branding
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" size="lg">
-                  Get Started
-                </Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Enterprise</CardTitle>
-                <CardDescription>
-                  For large teams and high-volume businesses.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-baseline justify-center space-x-2">
-                  <span className="text-4xl font-bold">$99</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    /month
-                  </span>
-                </div>
-                <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Publish unlimited offers
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Manage unlimited client profiles
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Advanced analytics and reporting
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                    Dedicated account manager
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="mr-2 h-4 w-4 fill-primary" />
-                    Custom integrations
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" size="lg">
-                  Get Started
-                </Button>
-              </CardFooter>
-            </Card>
+            {plans?.map((plan) => (
+              <Card key={plan.id}>
+                <CardHeader>
+                  <CardTitle>{plan.name}</CardTitle>
+                  <CardDescription>{plan.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-baseline justify-center space-x-2">
+                    <span className="text-4xl font-bold">${plan.price}</span>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      /month
+                    </span>
+                  </div>
+                  <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
+                    <li className="flex items-center">
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
+                      Publish up to {plan.offerPublishQuantity} offers
+                    </li>
+                    <li className="flex items-center">
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
+                      Manage up to 50 client profiles
+                    </li>
+                    <li className="flex items-center">
+                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
+                      Basic analytics
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full" size="lg">
+                    Get Started
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
           </div>
         </div>
         <div className="col-span-2 space-y-6">

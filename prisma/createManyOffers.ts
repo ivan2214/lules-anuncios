@@ -20,14 +20,12 @@ export const createManyOffers = async () => {
     const randomStoreImage = faker.image.urlPicsumPhotos();
     const randomStorePhone = faker.phone.number();
     const randomPlanName = faker.helpers.arrayElement(mockPlan).name;
-    const randomPlanDescription = faker.lorem.paragraph();
-    const randomPlanPrice = faker.commerce.price();
+    const randomPlanDescription = faker.helpers.arrayElement(mockPlan).description;
+    const randomPlanPrice = faker.helpers.arrayElement(mockPlan).price;
     const randomPlanOffersLimit =
       faker.helpers.arrayElement(mockPlan).offersLimit;
-    const randomPlanOfferPublishQuantity = faker.number.int({
-      min: 1,
-      max: 10,
-    });
+    const randomPlanOfferPublishQuantity =
+      faker.helpers.arrayElement(mockPlan).offerPublishQuantity;
     const randomPlanIsFree = faker.helpers.arrayElement(mockPlan).isFree;
 
     const data = {
@@ -48,9 +46,9 @@ export const createManyOffers = async () => {
       },
     });
 
-    const storePasword= "store123"
+    const storePasword = "store123";
     const hashPassword = await bcrypt.hash(storePasword, 10);
-    
+
     const randomEmailVerified = faker.datatype.boolean() ? new Date() : null;
 
     const store = await db.store.create({
