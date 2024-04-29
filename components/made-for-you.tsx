@@ -11,8 +11,9 @@ interface MadeForYouProps {}
 export const revalidate = 60 * 60 * 24;
 
 export const MadeForYou: React.FC<MadeForYouProps> = async () => {
-  const offers = await getRecommendedOffers("clvhk54bj0002tkg31ya7vjat", 15);
   const session = await auth();
+  const offers = await getRecommendedOffers(session?.user.id, 15);
+
   const userId = session?.user?.id;
   return (
     <section>

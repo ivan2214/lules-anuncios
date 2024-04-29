@@ -1,4 +1,5 @@
 "use client";
+import ImageSkeleton from "@/components/image-skeleton";
 import { Image } from "@prisma/client";
 import { useState } from "react";
 import { BsSearch } from "react-icons/bs"; // Importa el icono de lupa
@@ -42,12 +43,10 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         className="relative w-full overflow-hidden rounded-lg"
         style={{ cursor: "zoom-in" }}
       >
-        <img
+        <ImageSkeleton
           alt="Sneaker Image"
           className="aspect-[1/1] w-full object-cover object-center transition"
-          height="500"
           src={images[currentImage].url || ""}
-          width="500"
         />
       </div>
       <div className="w-full grid grid-cols-4 gap-4">
@@ -57,12 +56,10 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
             onClick={() => selectImage(index)}
             className="w-full overflow-hidden rounded-lg cursor-pointer transition hover:opacity-60"
           >
-            <img
+            <ImageSkeleton
               alt="Sneaker Image"
               className="aspect-[1/1] w-full object-cover object-center"
-              height="500"
               src={image?.url || ""}
-              width="500"
             />
           </picture>
         ))}

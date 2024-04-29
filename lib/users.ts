@@ -19,7 +19,21 @@ export const updateUserPreferences = async (
 };
 
 // Función para obtener ofertas recomendadas para un usuario
-export const getRecommendedOffers = async (userId: string, take: number) => {
+export const getRecommendedOffers = async (
+  userId?: string | null,
+  take?: number
+) => {
+  if (!userId) {
+    return await db.offer.findMany({
+      include: {
+        categories: true,
+        images: true,
+        store: true,
+        interactions: true,
+      },
+      take,
+    });
+  }
   try {
     // Obtener las preferencias del usuario
     const userPreferences =
