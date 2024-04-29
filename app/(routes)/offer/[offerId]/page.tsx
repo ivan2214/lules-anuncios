@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { getOffer } from "@/requestDb/get-offer";
 import { ChatContent } from "./components/chat-content";
+import { revalidatePath } from "next/cache";
 
 interface OfferPageProps {
   params: {
     offerId?: string;
   };
 }
-
-export const revalidate= 10
 
 const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
   const offerId = params?.offerId;
@@ -19,12 +18,7 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
 
   const offer = await getOffer(offerId);
 
-  const chat= offer?.chat
-
-  const messages= chat?.messages
-
-  console.log({messages});
-  
+  const chat = offer?.chat;
 
   if (!offer) {
     return null;

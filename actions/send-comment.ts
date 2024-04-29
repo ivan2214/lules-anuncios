@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { MessageFormValues } from "@/app/(routes)/offer/[offerId]/components/chat-message-form";
 import { MessageSchema } from "@/schemas";
 import { Chat } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export const sendComment = async (values: MessageFormValues) => {
   const validatedFields = MessageSchema.safeParse(values);
@@ -108,4 +109,5 @@ export const sendComment = async (values: MessageFormValues) => {
       });
     }
   }
+  revalidatePath("/offer/[offerId]");
 };
