@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getOffer } from "@/requestDb/get-offer";
 import { ChatContent } from "./components/chat-content";
+import { ImageGallery } from "./components/image-gallery";
 
 interface OfferPageProps {
   params: {
@@ -26,33 +27,7 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
   return (
     <section className="w-full py-12 items-center md:py-24 lg:py-32 flex flex-col gap-y-8">
       <section className="lg:container flex flex-col lg:flex-row items-start gap-8 lg:px-4 md:px-6">
-        <section className="w-full lg:w-1/2 flex flex-col gap-4">
-          <picture className="w-full overflow-hidden rounded-lg">
-            <img
-              alt="Sneaker Image"
-              className="aspect-[1/1] w-full object-cover object-center"
-              height="500"
-              src={offer?.images[0]?.url || ""}
-              width="500"
-            />
-          </picture>
-          <div className="w-full grid grid-cols-4 gap-4">
-            {offer?.images?.map((image) => (
-              <picture
-                key={image.id}
-                className="w-full overflow-hidden rounded-lg"
-              >
-                <img
-                  alt="Sneaker Image"
-                  className="aspect-[1/1] w-full object-cover object-center"
-                  height="500"
-                  src={image?.url || ""}
-                  width="500"
-                />
-              </picture>
-            ))}
-          </div>
-        </section>
+        <ImageGallery images={offer.images} />
         <div className="space-y-6">
           <h1 className="text-4xl font-bold tracking-tighter">
             {offer?.title}
