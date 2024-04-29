@@ -3,11 +3,10 @@ import { db } from "../lib/db";
 import { UserRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-export const createManyUsers = async (
-  numberOfUsers: number | undefined = 55
-) => {
+export const createManyUsers = async () => {
   const password = "123456";
   const hashPassword = await bcrypt.hash(password, 10);
+  const numberOfUsers = faker.number.int({ min: 10, max: 45 });
 
   for (let i = 0; i < numberOfUsers; i++) {
     const user = {
@@ -20,6 +19,7 @@ export const createManyUsers = async (
     };
 
     await db.user.create({ data: user });
-    console.log("Creando usuario...", i + 1);
+    console.log(`👤 Creando usuarios ${i + 1} de ${numberOfUsers}...`);
   }
+  console.log("--------------------------------------");
 };

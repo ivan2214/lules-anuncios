@@ -4,7 +4,7 @@ import { mockPlan } from "./mocks";
 import { Image, MessageSender } from "@prisma/client";
 
 export const createManyOffers = async () => {
-  const randomNumberOffers = faker.number.int({ min: 1, max: 45 });
+  const randomNumberOffers = faker.number.int({ min: 10, max: 45 });
   for (let i = 0; i < randomNumberOffers; i++) {
     const randomName = faker.commerce.productName();
     const randomPrice = faker.commerce.price();
@@ -129,8 +129,9 @@ export const createManyOffers = async () => {
         },
       });
       imagesCreatedForOffers.push(image);
-      console.log(`Creando imagenes ${i + 1} de ${randomNumerImages}`);
+      console.log(`📸 Creando imagenes ${i + 1} de ${randomNumerImages}...`);
     }
+    console.log("--------------------------------------");
 
     const randomNumberMessage = faker.number.int({ min: 1, max: 10 });
 
@@ -182,9 +183,11 @@ export const createManyOffers = async () => {
         });
       }
 
-      console.log(`Creando mensajes ${i + 1} de ${randomNumberMessage}...`);
+      console.log(`📧 Creando mensajes ${i + 1} de ${randomNumberMessage}...`);
     }
+    console.log("--------------------------------------");
 
-    console.log(`Creando ofertas ${i + 1} de ${randomNumberOffers}...`);
+    console.log(`💼 Creando ofertas ${i + 1} de ${randomNumberOffers}...`);
   }
+  console.log("--------------------------------------");
 };
