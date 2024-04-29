@@ -24,10 +24,11 @@ interface ChatProps {
   chat?: ChatExtended;
 }
 
-
 export const ChatContent: React.FC<ChatProps> = async ({ chat, store }) => {
   const session = await auth();
   const user = session?.user;
+  console.log({user});
+
   return (
     <Card className="flex h-full flex-col w-full">
       {/* Chat header */}

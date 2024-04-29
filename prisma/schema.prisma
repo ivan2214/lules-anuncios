@@ -190,10 +190,10 @@ model Message {
   chatId    String
 
   sender MessageSender @default(USER)
-  user   User?         @relation(fields: [userId], references: [id])
+  user   User?         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String?
 
-  store   Store? @relation(fields: [storeId], references: [id])
+  store   Store?  @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   storeId String?
 
   @@index([userId])
