@@ -5,12 +5,12 @@ import {
   CardContent,
   CardFooter,
   Card
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { BarChartIcon, CheckIcon, ShareIcon, UsersIcon } from 'lucide-react'
-import { db } from '@/lib/db'
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { BarChartIcon, CheckIcon, ShareIcon, UsersIcon } from 'lucide-react';
+import { db } from '@/lib/db';
 
-export async function Pricing () {
+export async function Pricing() {
   const plans = await db.plan.findMany({
     orderBy: {
       price: 'asc'
@@ -18,17 +18,15 @@ export async function Pricing () {
     include: {
       features: true
     }
-  })
-  console.log(plans)
+  });
+  console.log(plans);
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-      <div className="grid gap-10  md:gap-16 md:grid-cols-3">
+    <section className="w-full bg-gray-100 py-12 dark:bg-gray-800 md:py-24 lg:py-32">
+      <div className="grid gap-10  md:grid-cols-3 md:gap-16">
         <div className="space-y-6 px-6">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Pricing
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Pricing</h2>
             <p className="text-gray-500 dark:text-gray-400">
               Choose the plan thats right for your business.
             </p>
@@ -43,9 +41,7 @@ export async function Pricing () {
                 <CardContent>
                   <div className="flex items-baseline justify-center space-x-2">
                     <span className="text-4xl font-bold">${plan.price}</span>
-                    <span className="text-gray-500 dark:text-gray-400">
-                      /month
-                    </span>
+                    <span className="text-gray-500 dark:text-gray-400">/month</span>
                   </div>
                   <ul className="mt-6 space-y-4 text-sm text-gray-500 dark:text-gray-400">
                     <li className="flex items-center">
@@ -71,7 +67,7 @@ export async function Pricing () {
           </div>
         </div>
         <div className="col-span-2 space-y-6">
-          <div className="space-y-2 sticky top-10">
+          <div className="sticky top-10 space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
               Publish Offers, Manage Clients, Track Analytics
             </h2>
@@ -79,16 +75,15 @@ export async function Pricing () {
               Our platform provides everything you need to grow your business.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 sticky top-48">
+          <div className="sticky top-48 grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <ShareIcon className="h-6 w-6 text-primary" />
                 <h3 className="text-xl font-bold">Publish Offers</h3>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
-                Create and publish offers to reach new clients. Our platform
-                makes it easy to manage your offer catalog and track
-                performance.
+                Create and publish offers to reach new clients. Our platform makes it easy to manage
+                your offer catalog and track performance.
               </p>
             </div>
             <div className="space-y-4">
@@ -97,9 +92,8 @@ export async function Pricing () {
                 <h3 className="text-xl font-bold">Manage Clients</h3>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
-                Keep track of your client profiles, communication, and
-                transactions. Our platform provides a centralized hub to manage
-                your client relationships.
+                Keep track of your client profiles, communication, and transactions. Our platform
+                provides a centralized hub to manage your client relationships.
               </p>
             </div>
             <div className="space-y-4">
@@ -108,14 +102,13 @@ export async function Pricing () {
                 <h3 className="text-xl font-bold">Track Analytics</h3>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
-                Get detailed insights into your offer performance, client
-                engagement, and revenue. Our analytics dashboard helps you make
-                data-driven decisions to grow your business.
+                Get detailed insights into your offer performance, client engagement, and revenue.
+                Our analytics dashboard helps you make data-driven decisions to grow your business.
               </p>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

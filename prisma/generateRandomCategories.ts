@@ -1,15 +1,15 @@
-import { faker } from '@faker-js/faker'
-import { db } from '../lib/db'
-import { type Offer } from '@prisma/client'
+import { faker } from '@faker-js/faker';
+import { db } from '../lib/db';
+import { type Offer } from '@prisma/client';
 
 export const generateRandomCategories = async (offer: Offer) => {
-  const categoryName = faker.commerce.department()
+  const categoryName = faker.commerce.department();
 
   const categoryIsAlreadyCreated = await db.category.findFirst({
     where: {
       name: categoryName
     }
-  })
+  });
 
   if (!categoryIsAlreadyCreated) {
     await db.category.create({
@@ -21,7 +21,7 @@ export const generateRandomCategories = async (offer: Offer) => {
           }
         }
       }
-    })
+    });
   }
 
   if (categoryIsAlreadyCreated) {
@@ -36,6 +36,6 @@ export const generateRandomCategories = async (offer: Offer) => {
           }
         }
       }
-    })
+    });
   }
-}
+};

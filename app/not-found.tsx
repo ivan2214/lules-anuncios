@@ -1,6 +1,6 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
-export default function NotFound () {
+export default function NotFound() {
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-6 p-4 text-center">
       <div className="space-y-2">
@@ -16,5 +16,5 @@ export default function NotFound () {
         Go back home
       </Link>
     </div>
-  )
+  );
 }

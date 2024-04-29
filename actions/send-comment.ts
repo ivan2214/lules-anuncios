@@ -1,18 +1,18 @@
-'use server'
+'use server';
 
-import { db } from '@/lib/db'
-import { type MessageFormValues } from '@/app/(routes)/offer/[offerId]/components/chat-message-form'
-import { MessageSchema } from '@/schemas'
-import { revalidatePath } from 'next/cache'
+import { db } from '@/lib/db';
+import { type MessageFormValues } from '@/app/(routes)/offer/[offerId]/components/chat-message-form';
+import { MessageSchema } from '@/schemas';
+import { revalidatePath } from 'next/cache';
 
 export const sendComment = async (values: MessageFormValues) => {
-  const validatedFields = MessageSchema.safeParse(values)
+  const validatedFields = MessageSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: 'Invalid fields!' }
+    return { error: 'Invalid fields!' };
   }
 
-  const { chatId, content, sender, senderId, storeId } = validatedFields.data
+  const { chatId, content, sender, senderId, storeId } = validatedFields.data;
 
   if (chatId) {
     if (sender === 'USER') {
@@ -33,7 +33,7 @@ export const sendComment = async (values: MessageFormValues) => {
             }
           }
         }
-      })
+      });
     }
 
     if (sender === 'STORE') {
@@ -54,7 +54,7 @@ export const sendComment = async (values: MessageFormValues) => {
             }
           }
         }
-      })
+      });
     }
   }
 
@@ -79,7 +79,7 @@ export const sendComment = async (values: MessageFormValues) => {
             }
           }
         }
-      })
+      });
     }
 
     if (sender === 'STORE') {
@@ -102,8 +102,8 @@ export const sendComment = async (values: MessageFormValues) => {
             }
           }
         }
-      })
+      });
     }
   }
-  revalidatePath('/offer/[offerId]')
-}
+  revalidatePath('/offer/[offerId]');
+};

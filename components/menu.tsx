@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Menubar,
   MenubarContent,
@@ -9,18 +9,18 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger
-} from '@/components/ui/menubar'
-import { cn, createUrl } from '@/lib/utils'
-import Link from 'next/link'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import UserMenu from './user-menu'
-import { SearchBar } from './search-bar'
-import { Suspense } from 'react'
-import SearchBarFallback from './fallbacks/search-bar-fallback'
-import { type Category, type Store } from '@prisma/client'
-import AuthButtons from '@/components/auth-options'
-import { type User } from 'next-auth'
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/menubar';
+import { cn, createUrl } from '@/lib/utils';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import UserMenu from './user-menu';
+import { SearchBar } from './search-bar';
+import { Suspense } from 'react';
+import SearchBarFallback from './fallbacks/search-bar-fallback';
+import { type Category, type Store } from '@prisma/client';
+import AuthButtons from '@/components/auth-options';
+import { type User } from 'next-auth';
+import { Button } from '@/components/ui/button';
 
 const filterOptions = [
   {
@@ -48,7 +48,7 @@ const filterOptions = [
     name: 'Mas vendidos',
     value: 'most_sold'
   }
-]
+];
 
 const sortOptions = [
   {
@@ -63,94 +63,83 @@ const sortOptions = [
     name: 'De mas popular a menos',
     value: 'most_popular'
   }
-]
+];
 
-export function Menu ({
+export function Menu({
   categories,
   stores,
   user,
   store
 }: {
-  categories?: Category[]
-  stores?: Store[]
-  user?: User | null
-  store?: Store | null
+  categories?: Category[];
+  stores?: Store[];
+  user?: User | null;
+  store?: Store | null;
 }) {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const selectedCategories = searchParams.get('category')?.split(',') ?? []
-  const selectedSortValues = searchParams.get('sort')?.split(',')
-  const selectedFilterValues = searchParams.get('filter')
-  const router = useRouter()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const selectedCategories = searchParams.get('category')?.split(',') ?? [];
+  const selectedSortValues = searchParams.get('sort')?.split(',');
+  const selectedFilterValues = searchParams.get('filter');
+  const router = useRouter();
 
   const handleCategoryClick = (categoryValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString())
-    const updatedCategories = [...selectedCategories]
-    const categoryIndex = updatedCategories.indexOf(categoryValue)
+    const newParams = new URLSearchParams(searchParams?.toString());
+    const updatedCategories = [...selectedCategories];
+    const categoryIndex = updatedCategories.indexOf(categoryValue);
 
     if (categoryIndex === -1) {
-      updatedCategories.push(categoryValue)
+      updatedCategories.push(categoryValue);
     } else {
-      updatedCategories.splice(categoryIndex, 1)
+      updatedCategories.splice(categoryIndex, 1);
     }
 
     if (updatedCategories.length > 0) {
-      newParams.set(
-        'category',
-        updatedCategories.map((category) => category).join(',')
-      )
+      newParams.set('category', updatedCategories.map((category) => category).join(','));
     } else {
-      newParams.delete('category')
+      newParams.delete('category');
     }
 
-    const includesOfferPage = pathname?.includes('offers')
-    const pathNameDefined = !includesOfferPage
-      ? `/offers${pathname}`
-      : pathname
+    const includesOfferPage = pathname?.includes('offers');
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
 
-    router.push(createUrl(pathNameDefined, newParams))
-    router.refresh()
-  }
+    router.push(createUrl(pathNameDefined, newParams));
+    router.refresh();
+  };
 
   const handleSortClick = (sortValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString())
-    newParams.set('sort', sortValue)
-    const includesOfferPage = pathname?.includes('offers')
-    const pathNameDefined = !includesOfferPage
-      ? `/offers${pathname}`
-      : pathname
+    const newParams = new URLSearchParams(searchParams?.toString());
+    newParams.set('sort', sortValue);
+    const includesOfferPage = pathname?.includes('offers');
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
 
-    router.push(createUrl(pathNameDefined, newParams))
-    router.refresh()
-  }
+    router.push(createUrl(pathNameDefined, newParams));
+    router.refresh();
+  };
 
   const handleFilterClick = (filterValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString())
-    newParams.set('filter', filterValue)
-    const includesOfferPage = pathname?.includes('offers')
-    const pathNameDefined = !includesOfferPage
-      ? `/offers${pathname}`
-      : pathname
+    const newParams = new URLSearchParams(searchParams?.toString());
+    newParams.set('filter', filterValue);
+    const includesOfferPage = pathname?.includes('offers');
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
 
-    router.push(createUrl(pathNameDefined, newParams))
-    router.refresh()
-  }
+    router.push(createUrl(pathNameDefined, newParams));
+    router.refresh();
+  };
 
   const handleStoreClick = (storeValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString())
-    newParams.set('store', storeValue)
-    const includesOfferPage = pathname?.includes('offers')
-    const pathNameDefined = !includesOfferPage
-      ? `/offers${pathname}`
-      : pathname
+    const newParams = new URLSearchParams(searchParams?.toString());
+    newParams.set('store', storeValue);
+    const includesOfferPage = pathname?.includes('offers');
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
 
-    router.push(createUrl(pathNameDefined, newParams))
-    router.refresh()
-  }
+    router.push(createUrl(pathNameDefined, newParams));
+    router.refresh();
+  };
 
   return (
-    <Menubar className="rounded-none border-b border-none px-2 lg:px-4 py-8 flex justify-between w-full items-center">
-      <div className="flex gap-2 items-center">
+    <Menubar className="flex w-full items-center justify-between rounded-none border-b border-none px-2 py-8 lg:px-4">
+      <div className="flex items-center gap-2">
         <Link className="font-bold" href="/">
           Inicio
         </Link>
@@ -167,9 +156,11 @@ export function Menu ({
                 {filterOptions.map((filter) => (
                   <MenubarItem
                     key={filter.value}
-                    onClick={() => { handleFilterClick(filter.value) }}
+                    onClick={() => {
+                      handleFilterClick(filter.value);
+                    }}
                     className={cn(
-                      'hover:underline text-sm transition-colors duration-300',
+                      'text-sm transition-colors duration-300 hover:underline',
                       selectedFilterValues?.includes(filter.value) &&
                         'underline decoration-primary underline-offset-4'
                     )}
@@ -186,9 +177,11 @@ export function Menu ({
                 {stores?.map((filter) => (
                   <MenubarItem
                     key={filter.id}
-                    onClick={() => { handleStoreClick(filter.name) }}
+                    onClick={() => {
+                      handleStoreClick(filter.name);
+                    }}
                     className={cn(
-                      'hover:underline text-sm transition-colors duration-300',
+                      'text-sm transition-colors duration-300 hover:underline',
                       selectedFilterValues?.includes(filter.name) &&
                         'underline decoration-primary underline-offset-4'
                     )}
@@ -205,9 +198,11 @@ export function Menu ({
                 {sortOptions.map((sort) => (
                   <MenubarItem
                     key={sort.value}
-                    onClick={() => { handleSortClick(sort.value) }}
+                    onClick={() => {
+                      handleSortClick(sort.value);
+                    }}
                     className={cn(
-                      'hover:underline text-sm transition-colors duration-300',
+                      'text-sm transition-colors duration-300 hover:underline',
                       selectedSortValues?.includes(sort.value) &&
                         'underline decoration-primary underline-offset-4'
                     )}
@@ -224,9 +219,11 @@ export function Menu ({
                 {categories?.map((category) => (
                   <MenubarItem
                     key={category.id}
-                    onClick={() => { handleCategoryClick(category.name) }}
+                    onClick={() => {
+                      handleCategoryClick(category.name);
+                    }}
                     className={cn(
-                      'hover:underline text-sm transition-colors duration-300',
+                      'text-sm transition-colors duration-300 hover:underline',
                       selectedCategories.includes(category.name) &&
                         'underline decoration-primary underline-offset-4'
                     )}
@@ -239,17 +236,14 @@ export function Menu ({
           </MenubarContent>
         </MenubarMenu>
       </div>
-      <section className="flex gap-2 items-center">
+      <section className="flex items-center gap-2">
         <Suspense fallback={<SearchBarFallback />}>
           <SearchBar />
         </Suspense>
         {!user && <AuthButtons />}
         {store && (
           <Button>
-            <Link
-              className="flex items-center gap-2 text-base font-light"
-              href="/create-offer"
-            >
+            <Link className="flex items-center gap-2 text-base font-light" href="/create-offer">
               Crear oferta
             </Link>
           </Button>
@@ -257,5 +251,5 @@ export function Menu ({
         {user && <UserMenu store={store} user={user} />}
       </section>
     </Menubar>
-  )
+  );
 }

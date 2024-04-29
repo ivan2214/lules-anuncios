@@ -1,4 +1,4 @@
-import { db } from '@/lib/db'
+import { db } from '@/lib/db';
 
 export const getOffer = async (offerId: string) => {
   try {
@@ -22,10 +22,10 @@ export const getOffer = async (offerId: string) => {
           }
         }
       }
-    })
+    });
 
-    return offer
+    return offer;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};

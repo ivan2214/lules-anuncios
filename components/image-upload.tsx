@@ -1,36 +1,36 @@
-import { useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { useEffect, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 
-import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { Trash } from 'lucide-react';
 
 interface ImageUploadProps {
-  disabled?: boolean
-  onChange: (value: string) => void
-  onRemove: (value: string) => void
-  value: string[]
+  disabled?: boolean;
+  onChange: (value: string) => void;
+  onRemove: (value: string) => void;
+  value: string[];
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ disabled, onChange, onRemove, value }) => {
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   const onDrop = (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0]
-    const reader = new FileReader()
+    const file = acceptedFiles[0];
+    const reader = new FileReader();
     reader.onload = () => {
-      onChange(reader.result as string)
-    }
-    reader.readAsDataURL(file)
-  }
+      onChange(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
@@ -42,7 +42,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled, onChange, onRemove,
               <Button
                 type="button"
                 onClick={() => {
-                  onRemove(url)
+                  onRemove(url);
                 }}
                 variant="destructive"
                 size="sm"
@@ -124,7 +124,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled, onChange, onRemove,
         }}
       </CldUploadWidget> */}
     </div>
-  )
-}
+  );
+};
 
-export default ImageUpload
+export default ImageUpload;

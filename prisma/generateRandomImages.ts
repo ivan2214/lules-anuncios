@@ -1,10 +1,10 @@
-import { faker } from '@faker-js/faker'
-import { db } from '../lib/db'
-import { type Offer, type Image } from '@prisma/client'
+import { faker } from '@faker-js/faker';
+import { db } from '../lib/db';
+import { type Offer, type Image } from '@prisma/client';
 
 export const generateRandomImages = async (offer: Offer) => {
-  const randomNumerImages = faker.number.int({ min: 1, max: 4 })
-  const imagesCreatedForOffers: Image[] = []
+  const randomNumerImages = faker.number.int({ min: 1, max: 4 });
+  const imagesCreatedForOffers: Image[] = [];
   for (let i = 0; i < randomNumerImages; i++) {
     const image = await db.image.create({
       data: {
@@ -15,8 +15,8 @@ export const generateRandomImages = async (offer: Offer) => {
           }
         }
       }
-    })
-    imagesCreatedForOffers.push(image)
-    console.log(`📸 Creando imagenes ${i + 1} de ${randomNumerImages}...`)
+    });
+    imagesCreatedForOffers.push(image);
+    console.log(`📸 Creando imagenes ${i + 1} de ${randomNumerImages}...`);
   }
-}
+};
