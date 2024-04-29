@@ -4,7 +4,8 @@ import { mockPlan } from "./mocks";
 import { Image, MessageSender } from "@prisma/client";
 
 export const createManyOffers = async () => {
-  for (let i = 0; i < 45; i++) {
+  const randomNumberOffers = faker.number.int({ min: 1, max: 45 });
+  for (let i = 0; i < randomNumberOffers; i++) {
     const randomName = faker.commerce.productName();
     const randomPrice = faker.commerce.price();
     const randomDescription = faker.lorem.sentence();
@@ -115,7 +116,8 @@ export const createManyOffers = async () => {
       },
     });
 
-    for (let i = 0; i < faker.number.int({ min: 1, max: 4 }); i++) {
+    const randomNumerImages = faker.number.int({ min: 1, max: 4 });
+    for (let i = 0; i < randomNumerImages; i++) {
       const image = await db.image.create({
         data: {
           url: faker.image.urlPicsumPhotos(),
@@ -127,9 +129,12 @@ export const createManyOffers = async () => {
         },
       });
       imagesCreatedForOffers.push(image);
+      console.log(`Creando imagenes ${i + 1} de ${randomNumerImages}`);
     }
 
-    for (let i = 0; i < faker.number.int({ min: 1, max: 10 }); i++) {
+    const randomNumberMessage = faker.number.int({ min: 1, max: 10 });
+
+    for (let i = 0; i < randomNumberMessage; i++) {
       const randomSender = faker.datatype.boolean()
         ? MessageSender.STORE
         : MessageSender.USER;
@@ -176,8 +181,10 @@ export const createManyOffers = async () => {
           },
         });
       }
+
+      console.log(`Creando mensajes ${i + 1} de ${randomNumberMessage}...`);
     }
 
-    console.log("Creando oferta ...", i);
+    console.log(`Creando ofertas ${i + 1} de ${randomNumberOffers}...`);
   }
 };
