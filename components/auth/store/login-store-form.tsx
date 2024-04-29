@@ -1,57 +1,64 @@
-'use client';
+"use client";
 
-import { useState, useTransition } from 'react';
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { useSearchParams } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useTransition } from "react";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { LoginSchema } from '@schemas/index';
+import { LoginStoreSchema } from "@schemas/index";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@ui/form";
 
-import CardWrapper from '@components/auth/card-wrapper';
-import { Input } from '@ui/input';
-import { Button } from '@ui/button';
-import { FormError } from '@components/form-error';
-import { FormSucces } from '@components/form-succes';
-import { login } from '@/actions/login';
-import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import CardWrapper from "@components/auth/card-wrapper";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
+import { FormError } from "@components/form-error";
+import { FormSucces } from "@components/form-succes";
+import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import { loginStore } from "@/actions/login-store";
 
-export type LoginFormValues = z.infer<typeof LoginSchema>;
+export type LoginStoreFormValues = z.infer<typeof LoginStoreSchema>;
 
 export type ResponseServerAction = {
   error?: string;
   success?: string;
 };
 
-export const LoginForm = () => {
+export const LoginStoreForm = () => {
   const searchParams = useSearchParams();
   const urlError =
-    searchParams.get('error') === 'OAuthAccountNotLinked'
-      ? 'Email already in use with different provider'
-      : '';
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider"
+      : "";
 
-  const [error, setError] = useState<string | undefined>('');
+  const [error, setError] = useState<string | undefined>("");
   const [viewPassword, setViewPassword] = useState(false);
 
-  const [success, setSuccess] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<LoginFormValues>({
+  const form = useForm<LoginStoreFormValues>({
     defaultValues: {
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     },
-    resolver: zodResolver(LoginSchema)
+    resolver: zodResolver(LoginStoreSchema),
   });
 
-  function onSubmit(values: LoginFormValues) {
-    setError('');
-    setSuccess('');
+  function onSubmit(values: LoginStoreFormValues) {
+    setError("");
+    setSuccess("");
 
     startTransition(() => {
-      login(values).then((res?: ResponseServerAction) => {
+      loginStore(values).then((res?: ResponseServerAction) => {
         if (res?.error) {
           setError(res.error);
         }
@@ -64,17 +71,17 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      hederLabel="Bienvenido de nuevo!"
-      backButtonLabel="Todavía no tienes una cuenta? Registrate!"
-      backButtonHref="/auth/register"
-      showSocial
+      hederLabel="Bienvenido"
+      backButtonLabel="Aun no tienes una tienda? Crea una aqui"
+      backButtonHref="/auth/store/register"
       footer
-      footerHref="/auth/store/login"
-      footerLabel='Ya tienes una tienda o quieres hacerlo?'
+      footerHref="/auth/store/register"
+      footerLabel="Crea una tienda"
+      className="bg-slate-900 text-white"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-4 text-white">
             <FormField
               control={form.control}
               name="email"
@@ -94,7 +101,7 @@ export const LoginForm = () => {
               )}
             />
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 text-white">
             <FormField
               control={form.control}
               name="password"
@@ -105,7 +112,7 @@ export const LoginForm = () => {
                     <div className="flex items-center justify-between space-x-2">
                       <Input
                         disabled={isPending}
-                        type={viewPassword ? 'text' : 'password'}
+                        type={viewPassword ? "text" : "password"}
                         placeholder="********"
                         {...field}
                       />
@@ -131,7 +138,7 @@ export const LoginForm = () => {
           <FormSucces message={success} />
 
           <Button type="submit" className="w-full">
-            Iniciar sesión
+            Iniciar Sesion
           </Button>
         </form>
       </Form>

@@ -28,3 +28,5 @@ export const apiAuthPrefix = "/api/auth";
  */
 
 export const DEFAULT_LOGIN_REDIRECT = "/account";
+
+export const DEFAULT_LOGIN_STORE_REDIRECT = "/store/dashboard";

@@ -5,9 +5,10 @@ import Credentials from 'next-auth/providers/credentials';
 
 import bcrypt from 'bcryptjs';
 
-import { LoginSchema } from '@/schemas';
+import { LoginSchema, LoginStoreSchema } from '@/schemas';
 
 import { getUserByEmail } from './data/user';
+import { getStoreByEmail } from './data/store';
 
 export default {
   providers: [
@@ -40,7 +41,33 @@ export default {
         }
 
         return null;
-      }
+      },
+    }),
+    Credentials({
+      name: 'credentials-store',
+      id: 'credentials-store',
+      async authorize(credentials) {
+        const validatedFields = LoginStoreSchema.safeParse(credentials);
+
+        if (validatedFields.success) {
+          const { email, password } = validatedFields.data;
+
+          const store = await getStoreByEmail(email);
+
+          if (!store || !store.hashPassword) {
+            return null;
+          }
+
+          const isValid = await bcrypt.compare(password, store.hashPassword);
+
+          if (isValid) {
+            return store;
+          }
+        }
+
+        return null;
+      },
+
     })
   ]
 } satisfies NextAuthConfig;

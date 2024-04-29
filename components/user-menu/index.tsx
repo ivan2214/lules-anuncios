@@ -54,22 +54,23 @@ const UserMenu = ({ user }: { user: User }) => {
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-56 p-0" side="bottom">
-        <div />
-        <div>
-          <div className="flex flex-col gap-3 p-4">
-            {routes.map((route) => (
-              <Link
-                className="flex items-center gap-2 text-base font-light hover:text-primary transition"
-                href={route.href}
-                key={route.name}
-              >
-                <span>{route.name}</span>
-              </Link>
-            ))}
-            <Separator />
-            <Button onClick={() => signOut()}>Cerrar sesión</Button>
-          </div>
+      <PopoverContent align="end" className="p-0" side="bottom">
+        <div className="flex flex-col gap-3 p-4">
+          <p className="text-base font-light">{user.email}</p>
+
+          <Separator />
+
+          {routes.map((route) => (
+            <Link
+              className="flex items-center gap-2 text-base font-light hover:text-primary transition"
+              href={route.href}
+              key={route.name}
+            >
+              <span>{route.name}</span>
+            </Link>
+          ))}
+          <Separator />
+          <Button onClick={() => signOut()}>Cerrar sesión</Button>
         </div>
       </PopoverContent>
     </Popover>

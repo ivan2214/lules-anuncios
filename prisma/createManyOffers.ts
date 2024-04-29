@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { db } from "../lib/db";
 import { mockPlan } from "./mocks";
 import { Image, MessageSender } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 export const createManyOffers = async () => {
   const randomNumberOffers = faker.number.int({ min: 10, max: 45 });
@@ -47,6 +48,11 @@ export const createManyOffers = async () => {
       },
     });
 
+    const storePasword= "store123"
+    const hashPassword = await bcrypt.hash(storePasword, 10);
+    
+    const randomEmailVerified = faker.datatype.boolean() ? new Date() : null;
+
     const store = await db.store.create({
       data: {
         name: randomStoreName,
@@ -57,6 +63,8 @@ export const createManyOffers = async () => {
         verified: randomStoreVerified,
         image: randomStoreImage,
         phone: randomStorePhone,
+        hashPassword,
+        emailVerified: randomEmailVerified,
       },
     });
 

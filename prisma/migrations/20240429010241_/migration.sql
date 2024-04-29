@@ -19,6 +19,8 @@ CREATE TABLE "Store" (
     "email" TEXT NOT NULL,
     "phone" TEXT,
     "image" TEXT,
+    "emailVerified" TIMESTAMP(3),
+    "hashPassword" TEXT NOT NULL,
     "verified" BOOLEAN NOT NULL DEFAULT false,
     "planId" TEXT,
 
@@ -146,7 +148,7 @@ CREATE TABLE "messages" (
     "chatId" TEXT NOT NULL,
     "sender" "MessageSender" NOT NULL DEFAULT 'USER',
     "userId" TEXT,
-    "storeId" TEXT NOT NULL,
+    "storeId" TEXT,
 
     CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
 );

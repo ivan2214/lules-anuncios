@@ -15,17 +15,19 @@ datasource db {
 }
 
 model Store {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  name       String
-  address    String
-  city       String
-  postalCode String
-  email      String   @unique
-  phone      String?
-  image      String?
-  verified   Boolean  @default(false)
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  city          String
+  postalCode    String
+  email         String    @unique
+  phone         String?
+  image         String?
+  emailVerified DateTime?
+  hashPassword  String
+  verified      Boolean   @default(false)
 
   plan   Plan?   @relation(fields: [planId], references: [id])
   planId String?
