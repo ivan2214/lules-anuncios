@@ -10,6 +10,9 @@ import { db } from "@/lib/db";
 
 export const registerStore = async (values: RegisterStoreFormValues) => {
   const validatedFields = RegisterStoreSchema.safeParse(values);
+console.log({
+  ...values
+});
 
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
@@ -44,7 +47,8 @@ export const registerStore = async (values: RegisterStoreFormValues) => {
   if (verificationToken) {
     await sendVerificationEmail(
       verificationToken?.email,
-      verificationToken?.token
+      verificationToken?.token,
+      "STORE"
     );
   }
 

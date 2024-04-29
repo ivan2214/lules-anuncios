@@ -38,7 +38,7 @@ const ProfilePage = async () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {user?.accounts.length > 0 && (
+              {user?.accounts && user?.accounts?.length > 0 && (
                 <section className="grid grid-cols-2 gap-4">
                   {user?.accounts.map((account) => (
                     <div
@@ -65,7 +65,7 @@ const ProfilePage = async () => {
                   ))}
                 </section>
               )}
-              {!user?.accounts.length && (
+              {(!user.accounts || !user?.accounts?.length) && (
                 <p className="text-sm font-normal tracking-wider text-gray-500">
                   No hay cuentas conectadas
                 </p>

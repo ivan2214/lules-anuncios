@@ -206,7 +206,6 @@ model Message {
 
 enum UserRole {
   USER
-  ADMIN
   ANNONYMOUS
 }
 

@@ -26,6 +26,7 @@ import { registerStore } from "@/actions/register-store";
 export type RegisterStoreFormValues = z.infer<typeof RegisterStoreSchema>;
 
 export const RegisterStoreForm = () => {
+  const [viewPassword, setViewPassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
 
   const [success, setSuccess] = useState<string | undefined>("");
@@ -40,6 +41,7 @@ export const RegisterStoreForm = () => {
       phone: "",
       postalCode: "",
       image: "",
+      password: "",
     },
     resolver: zodResolver(RegisterStoreSchema),
   });
@@ -210,6 +212,36 @@ export const RegisterStoreForm = () => {
                 </FormItem>
               )}
             />
+          </div>
+
+          <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      type={viewPassword ? "text" : "password"}
+                      placeholder="********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center justify-between">
+              <Button
+                type="button"
+                variant="link"
+                onClick={() => setViewPassword(!viewPassword)}
+              >
+                {viewPassword ? "Hide password" : "Show password"}
+              </Button>
+            </div>
           </div>
 
           <FormError message={error} />

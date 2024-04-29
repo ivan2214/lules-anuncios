@@ -13,7 +13,7 @@ export const createManyUsers = async () => {
       name: faker.person.fullName(),
       email: faker.internet.email(),
       image: faker.image.avatar(),
-      role: faker.datatype.boolean() ? UserRole.ADMIN : UserRole.USER,
+      role: faker.datatype.boolean() ? UserRole.ANNONYMOUS : UserRole.USER,
       hashPassword,
       emailVerified: faker.datatype.boolean() ? new Date() : null,
     };

@@ -18,7 +18,20 @@ export interface Route {
   href: string;
 }
 
-const routes: Route[] = [
+const routesUser: Route[] = [
+  {
+    name: "Cuenta",
+    icon: "user",
+    href: "/account",
+  },
+  {
+    name: "Ayuda",
+    icon: "badge-help",
+    href: "/help",
+  },
+];
+
+const routesStore: Route[] = [
   {
     name: "Cuenta",
     icon: "user",
@@ -60,7 +73,7 @@ const UserMenu = ({ user }: { user: User }) => {
 
           <Separator />
 
-          {routes.map((route) => (
+          {routesUser?.map((route) => (
             <Link
               className="flex items-center gap-2 text-base font-light hover:text-primary transition"
               href={route.href}

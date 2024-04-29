@@ -6,7 +6,7 @@ import { LoginSchema } from "@/schemas";
 import { AuthError } from "next-auth";
 import { getStoreByEmail } from "@/data/store";
 import { sendVerificationEmail } from "@/lib/mail";
-import { DEFAULT_LOGIN_REDIRECT, DEFAULT_LOGIN_STORE_REDIRECT } from "@/routes";
+import {  DEFAULT_LOGIN_STORE_REDIRECT } from "@/routes";
 import { generateVerificationToken } from "@/lib/tokens";
 
 export const loginStore = async (values: LoginStoreFormValues) => {
@@ -32,7 +32,8 @@ export const loginStore = async (values: LoginStoreFormValues) => {
     if (verificationToken) {
       await sendVerificationEmail(
         verificationToken?.email,
-        verificationToken?.token
+        verificationToken?.token,
+        "STORE"
       );
     }
 
