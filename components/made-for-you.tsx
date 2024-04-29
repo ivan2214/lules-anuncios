@@ -1,15 +1,15 @@
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@/components/ui/separator'
 
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { OfferArticle } from '@/components/offer-article';
-import { getRecommendedOffers } from '@/lib/users';
-import { auth } from '@/auth';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { OfferArticle } from '@/components/offer-article'
+import { getRecommendedOffers } from '@/lib/users'
+import { auth } from '@/auth'
 
 export const MadeForYou = async () => {
-  const session = await auth();
-  const offers = await getRecommendedOffers(session?.user.id, 15);
+  const session = await auth()
+  const offers = await getRecommendedOffers(session?.user.id, 15)
 
-  const userId = session?.user?.id;
+  const userId = session?.user?.id
   return (
     <section>
       <div className="mt-6 space-y-1">
@@ -30,5 +30,5 @@ export const MadeForYou = async () => {
         </ScrollArea>
       </section>
     </section>
-  );
-};
+  )
+}

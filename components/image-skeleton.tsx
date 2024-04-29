@@ -1,41 +1,41 @@
-'use client';
+'use client'
 
-import { cn } from '@/lib/utils';
-import { useState, useEffect, useRef, type HTMLAttributes } from 'react';
+import { cn } from '@/lib/utils'
+import { useState, useEffect, useRef, type HTMLAttributes } from 'react'
 
 interface ImageSkeletonProps {
-  src: string;
-  alt?: string;
-  className?: HTMLAttributes<HTMLDivElement>['className'];
+  src: string
+  alt?: string
+  className?: HTMLAttributes<HTMLDivElement>['className']
 }
 
 const ImageSkeleton: React.FC<ImageSkeletonProps> = ({ src, alt = '', className = '' }) => {
-  const [loading, setLoading] = useState(true);
-  const imageRef = useRef<HTMLImageElement>(null);
+  const [loading, setLoading] = useState(true)
+  const imageRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    if (!src) return;
+    if (!src) return
 
-    const image = new Image();
-    image.src = src;
+    const image = new Image()
+    image.src = src
 
     const onLoad = () => {
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
     const onError = () => {
-      setLoading(false);
+      setLoading(false)
       // Manejar el error de carga de la imagen
-    };
+    }
 
-    image.addEventListener('load', onLoad);
-    image.addEventListener('error', onError);
+    image.addEventListener('load', onLoad)
+    image.addEventListener('error', onError)
 
     return () => {
-      image.removeEventListener('load', onLoad);
-      image.removeEventListener('error', onError);
-    };
-  }, [src]);
+      image.removeEventListener('load', onLoad)
+      image.removeEventListener('error', onError)
+    }
+  }, [src])
 
   return (
     <div>
@@ -49,7 +49,7 @@ const ImageSkeleton: React.FC<ImageSkeletonProps> = ({ src, alt = '', className 
         className={cn(loading ? 'hidden' : 'block', className)}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ImageSkeleton;
+export default ImageSkeleton

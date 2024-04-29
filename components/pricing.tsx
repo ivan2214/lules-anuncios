@@ -5,12 +5,12 @@ import {
   CardContent,
   CardFooter,
   Card
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { BarChartIcon, CheckIcon, ShareIcon, UsersIcon } from 'lucide-react';
-import { db } from '@/lib/db';
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { BarChartIcon, CheckIcon, ShareIcon, UsersIcon } from 'lucide-react'
+import { db } from '@/lib/db'
 
-export async function Pricing() {
+export async function Pricing () {
   const plans = await db.plan.findMany({
     orderBy: {
       price: 'asc'
@@ -18,8 +18,8 @@ export async function Pricing() {
     include: {
       features: true
     }
-  });
-  console.log(plans);
+  })
+  console.log(plans)
 
   return (
     <section className="w-full bg-gray-100 py-12 dark:bg-gray-800 md:py-24 lg:py-32">
@@ -110,5 +110,5 @@ export async function Pricing() {
         </div>
       </div>
     </section>
-  );
+  )
 }

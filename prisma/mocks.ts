@@ -1,17 +1,17 @@
-import { type Plan } from '@prisma/client';
+import { type Plan } from '@prisma/client'
 
 type safePlan = Omit<
-  Plan,
-  | 'id'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'billingEnabled'
-  | 'billingCycle'
-  | 'nextBillingDate'
-  | 'paymentStatus'
-  | 'lastPaymentDate'
-  | 'totalAmountPaid'
->;
+Plan,
+| 'id'
+| 'createdAt'
+| 'updatedAt'
+| 'billingEnabled'
+| 'billingCycle'
+| 'nextBillingDate'
+| 'paymentStatus'
+| 'lastPaymentDate'
+| 'totalAmountPaid'
+>
 
 export const mockPlan: safePlan[] = [
   {
@@ -38,4 +38,4 @@ export const mockPlan: safePlan[] = [
     offerPublishQuantity: 100,
     isFree: false
   }
-];
+]

@@ -1,9 +1,9 @@
-'use server';
-import { db } from '@/lib/db';
+'use server'
+import { db } from '@/lib/db'
 
-export async function updateImageUser(userId: string, image: string) {
+export async function updateImageUser (userId: string, image: string) {
   if (!userId || !image) {
-    return;
+    return
   }
   try {
     await db.user.update({
@@ -13,8 +13,8 @@ export async function updateImageUser(userId: string, image: string) {
       data: {
         image
       }
-    });
+    })
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }

@@ -1,7 +1,7 @@
-import { Populars } from '@/components/populars';
-import { Pricing } from '@/components/pricing';
-import Link from 'next/link';
-import { MadeForYou } from '@/components/made-for-you';
+import { Populars } from '@/components/populars'
+import { Pricing } from '@/components/pricing'
+import Link from 'next/link'
+import { MadeForYou } from '@/components/made-for-you'
 
 const page = () => {
   return (
@@ -61,7 +61,7 @@ const page = () => {
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default page;
+export default page

@@ -1,18 +1,18 @@
-'use client';
-import { cn } from '@/lib/utils';
+'use client'
+import { cn } from '@/lib/utils'
 
-import ImageSkeleton from '@/components/image-skeleton';
-import Link from 'next/link';
-import { type OfferExtens } from '@/types/offer';
-import { Badge } from './ui/badge';
+import ImageSkeleton from '@/components/image-skeleton'
+import Link from 'next/link'
+import { type OfferExtens } from '@/types/offer'
+import { Badge } from './ui/badge'
 
 interface OfferArticleProps extends React.HTMLAttributes<HTMLDivElement> {
-  offer: OfferExtens;
-  aspectRatio?: 'portrait' | 'square';
-  userId?: string;
+  offer: OfferExtens
+  aspectRatio?: 'portrait' | 'square'
+  userId?: string
 }
 
-export function OfferArticle({
+export function OfferArticle ({
   offer,
   aspectRatio = 'portrait',
   className,
@@ -31,12 +31,12 @@ export function OfferArticle({
           favoriteCategories: offer.categories,
           offer
         })
-      });
-      console.log('Preferencias actualizadas con éxito.');
+      })
+      console.log('Preferencias actualizadas con éxito.')
     } catch (error) {
-      console.log('Error al actualizar las preferencias del usuario:', error);
+      console.log('Error al actualizar las preferencias del usuario:', error)
     }
-  };
+  }
 
   return (
     <article className={cn('flex w-full  flex-col justify-between gap-y-5', className)}>
@@ -44,7 +44,7 @@ export function OfferArticle({
         href={`/offer/${offer.id}`}
         className="h-80  w-full overflow-hidden rounded-md"
         onClick={async () => {
-          await handleOfferClick(userId);
+          await handleOfferClick(userId)
         }}
       >
         <ImageSkeleton
@@ -66,5 +66,5 @@ export function OfferArticle({
         </Badge>
       </div>
     </article>
-  );
+  )
 }

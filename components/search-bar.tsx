@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import { SearchIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { createUrl } from '@/lib/utils';
+import { SearchIcon } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { createUrl } from '@/lib/utils'
 
 export const SearchBar = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function onSubmit (e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
 
-    const val = e.target as HTMLFormElement;
-    const search = val.search as HTMLInputElement;
-    const newParams = new URLSearchParams(searchParams.toString());
+    const val = e.target as HTMLFormElement
+    const search = val.search as HTMLInputElement
+    const newParams = new URLSearchParams(searchParams.toString())
 
     if (search.value) {
-      newParams.set('search', search.value);
+      newParams.set('search', search.value)
     } else {
-      newParams.delete('search');
+      newParams.delete('search')
     }
-    const includesOfferPage = pathname?.includes('offers');
-    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
+    const includesOfferPage = pathname?.includes('offers')
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname
 
-    router.push(createUrl(pathNameDefined, newParams));
-    router.refresh();
+    router.push(createUrl(pathNameDefined, newParams))
+    router.refresh()
   }
 
   return (
@@ -46,5 +46,5 @@ export const SearchBar = () => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}

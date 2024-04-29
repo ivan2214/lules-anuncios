@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import { db } from '@/lib/db';
-import { Badge } from './ui/badge';
+import Link from 'next/link'
+import { db } from '@/lib/db'
+import { Badge } from './ui/badge'
 
-export async function Populars() {
+export async function Populars () {
   const categories = await db.category.findMany({
     take: 5,
     select: {
@@ -17,7 +17,7 @@ export async function Populars() {
       },
       name: true
     }
-  });
+  })
 
   const stores = await db.store.findMany({
     take: 5,
@@ -27,7 +27,7 @@ export async function Populars() {
     include: {
       offers: true
     }
-  });
+  })
   return (
     <section className="flex w-full flex-col items-start gap-y-10">
       <div className="flex w-full items-center justify-between">
@@ -75,5 +75,5 @@ export async function Populars() {
         ))}
       </div>
     </section>
-  );
+  )
 }

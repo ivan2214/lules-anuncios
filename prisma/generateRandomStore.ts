@@ -1,20 +1,20 @@
-import { faker } from '@faker-js/faker';
-import { db } from '../lib/db';
-import bcrypt from 'bcryptjs';
-import { type Plan } from '@prisma/client';
+import { faker } from '@faker-js/faker'
+import { db } from '../lib/db'
+import bcrypt from 'bcryptjs'
+import { type Plan } from '@prisma/client'
 
 export const generateRandomStore = async (plan: Plan) => {
-  const randomStoreName = faker.company.name();
-  const randomStoreAddress = faker.location.streetAddress();
-  const randomStoreCity = faker.location.city();
-  const randomStorePostalCode = faker.location.zipCode();
-  const randomStoreEmail = faker.internet.email();
-  const randomStoreVerified = faker.datatype.boolean();
-  const randomStoreImage = faker.image.urlPicsumPhotos();
-  const randomStorePhone = faker.phone.number();
-  const storePasword = 'store123';
-  const hashPassword = await bcrypt.hash(storePasword, 10);
-  const randomEmailVerified = faker.datatype.boolean() ? new Date() : null;
+  const randomStoreName = faker.company.name()
+  const randomStoreAddress = faker.location.streetAddress()
+  const randomStoreCity = faker.location.city()
+  const randomStorePostalCode = faker.location.zipCode()
+  const randomStoreEmail = faker.internet.email()
+  const randomStoreVerified = faker.datatype.boolean()
+  const randomStoreImage = faker.image.urlPicsumPhotos()
+  const randomStorePhone = faker.phone.number()
+  const storePasword = 'store123'
+  const hashPassword = await bcrypt.hash(storePasword, 10)
+  const randomEmailVerified = faker.datatype.boolean() ? new Date() : null
 
   return await db.store.create({
     data: {
@@ -32,5 +32,5 @@ export const generateRandomStore = async (plan: Plan) => {
       // Asignar el plan pasado como argumento
       plan: { connect: { id: plan.id } }
     }
-  });
-};
+  })
+}

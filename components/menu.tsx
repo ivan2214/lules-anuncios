@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import {
   Menubar,
   MenubarContent,
@@ -9,18 +9,18 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger
-} from '@/components/ui/menubar';
-import { cn, createUrl } from '@/lib/utils';
-import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import UserMenu from './user-menu';
-import { SearchBar } from './search-bar';
-import { Suspense } from 'react';
-import SearchBarFallback from './fallbacks/search-bar-fallback';
-import { type Category, type Store } from '@prisma/client';
-import AuthButtons from '@/components/auth-options';
-import { type User } from 'next-auth';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui/menubar'
+import { cn, createUrl } from '@/lib/utils'
+import Link from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import UserMenu from './user-menu'
+import { SearchBar } from './search-bar'
+import { Suspense } from 'react'
+import SearchBarFallback from './fallbacks/search-bar-fallback'
+import { type Category, type Store } from '@prisma/client'
+import AuthButtons from '@/components/auth-options'
+import { type User } from 'next-auth'
+import { Button } from '@/components/ui/button'
 
 const filterOptions = [
   {
@@ -48,7 +48,7 @@ const filterOptions = [
     name: 'Mas vendidos',
     value: 'most_sold'
   }
-];
+]
 
 const sortOptions = [
   {
@@ -63,79 +63,79 @@ const sortOptions = [
     name: 'De mas popular a menos',
     value: 'most_popular'
   }
-];
+]
 
-export function Menu({
+export function Menu ({
   categories,
   stores,
   user,
   store
 }: {
-  categories?: Category[];
-  stores?: Store[];
-  user?: User | null;
-  store?: Store | null;
+  categories?: Category[]
+  stores?: Store[]
+  user?: User | null
+  store?: Store | null
 }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const selectedCategories = searchParams.get('category')?.split(',') ?? [];
-  const selectedSortValues = searchParams.get('sort')?.split(',');
-  const selectedFilterValues = searchParams.get('filter');
-  const router = useRouter();
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const selectedCategories = searchParams.get('category')?.split(',') ?? []
+  const selectedSortValues = searchParams.get('sort')?.split(',')
+  const selectedFilterValues = searchParams.get('filter')
+  const router = useRouter()
 
   const handleCategoryClick = (categoryValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString());
-    const updatedCategories = [...selectedCategories];
-    const categoryIndex = updatedCategories.indexOf(categoryValue);
+    const newParams = new URLSearchParams(searchParams?.toString())
+    const updatedCategories = [...selectedCategories]
+    const categoryIndex = updatedCategories.indexOf(categoryValue)
 
     if (categoryIndex === -1) {
-      updatedCategories.push(categoryValue);
+      updatedCategories.push(categoryValue)
     } else {
-      updatedCategories.splice(categoryIndex, 1);
+      updatedCategories.splice(categoryIndex, 1)
     }
 
     if (updatedCategories.length > 0) {
-      newParams.set('category', updatedCategories.map((category) => category).join(','));
+      newParams.set('category', updatedCategories.map((category) => category).join(','))
     } else {
-      newParams.delete('category');
+      newParams.delete('category')
     }
 
-    const includesOfferPage = pathname?.includes('offers');
-    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
+    const includesOfferPage = pathname?.includes('offers')
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname
 
-    router.push(createUrl(pathNameDefined, newParams));
-    router.refresh();
-  };
+    router.push(createUrl(pathNameDefined, newParams))
+    router.refresh()
+  }
 
   const handleSortClick = (sortValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString());
-    newParams.set('sort', sortValue);
-    const includesOfferPage = pathname?.includes('offers');
-    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
+    const newParams = new URLSearchParams(searchParams?.toString())
+    newParams.set('sort', sortValue)
+    const includesOfferPage = pathname?.includes('offers')
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname
 
-    router.push(createUrl(pathNameDefined, newParams));
-    router.refresh();
-  };
+    router.push(createUrl(pathNameDefined, newParams))
+    router.refresh()
+  }
 
   const handleFilterClick = (filterValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString());
-    newParams.set('filter', filterValue);
-    const includesOfferPage = pathname?.includes('offers');
-    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
+    const newParams = new URLSearchParams(searchParams?.toString())
+    newParams.set('filter', filterValue)
+    const includesOfferPage = pathname?.includes('offers')
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname
 
-    router.push(createUrl(pathNameDefined, newParams));
-    router.refresh();
-  };
+    router.push(createUrl(pathNameDefined, newParams))
+    router.refresh()
+  }
 
   const handleStoreClick = (storeValue: string) => {
-    const newParams = new URLSearchParams(searchParams?.toString());
-    newParams.set('store', storeValue);
-    const includesOfferPage = pathname?.includes('offers');
-    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname;
+    const newParams = new URLSearchParams(searchParams?.toString())
+    newParams.set('store', storeValue)
+    const includesOfferPage = pathname?.includes('offers')
+    const pathNameDefined = !includesOfferPage ? `/offers${pathname}` : pathname
 
-    router.push(createUrl(pathNameDefined, newParams));
-    router.refresh();
-  };
+    router.push(createUrl(pathNameDefined, newParams))
+    router.refresh()
+  }
 
   return (
     <Menubar className="flex w-full items-center justify-between rounded-none border-b border-none px-2 py-8 lg:px-4">
@@ -157,7 +157,7 @@ export function Menu({
                   <MenubarItem
                     key={filter.value}
                     onClick={() => {
-                      handleFilterClick(filter.value);
+                      handleFilterClick(filter.value)
                     }}
                     className={cn(
                       'text-sm transition-colors duration-300 hover:underline',
@@ -178,7 +178,7 @@ export function Menu({
                   <MenubarItem
                     key={filter.id}
                     onClick={() => {
-                      handleStoreClick(filter.name);
+                      handleStoreClick(filter.name)
                     }}
                     className={cn(
                       'text-sm transition-colors duration-300 hover:underline',
@@ -199,7 +199,7 @@ export function Menu({
                   <MenubarItem
                     key={sort.value}
                     onClick={() => {
-                      handleSortClick(sort.value);
+                      handleSortClick(sort.value)
                     }}
                     className={cn(
                       'text-sm transition-colors duration-300 hover:underline',
@@ -220,7 +220,7 @@ export function Menu({
                   <MenubarItem
                     key={category.id}
                     onClick={() => {
-                      handleCategoryClick(category.name);
+                      handleCategoryClick(category.name)
                     }}
                     className={cn(
                       'text-sm transition-colors duration-300 hover:underline',
@@ -251,5 +251,5 @@ export function Menu({
         {user && <UserMenu store={store} user={user} />}
       </section>
     </Menubar>
-  );
+  )
 }
