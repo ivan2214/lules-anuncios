@@ -15,19 +15,27 @@ datasource db {
 }
 
 model Store {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String
-  address       String
-  city          String
-  postalCode    String
-  email         String    @unique
-  phone         String?
-  image         String?
-  emailVerified DateTime?
-  hashPassword  String
-  verified      Boolean   @default(false)
+  id               String      @id @default(cuid())
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  name             String
+  address          String
+  city             String
+  postalCode       String
+  email            String      @unique
+  phone            String?
+  image            String?
+  emailVerified    DateTime?
+  hashPassword     String
+  verified         Boolean     @default(false)
+  status           StoreStatus // Estado de la tienda: activa, inactiva, pendiente de aprobación, etc.
+  verificationDate DateTime? // Fecha de verificación de la tienda
+  website          String? // Sitio web de la tienda
+  facebook         String? // Enlace al perfil de Facebook de la tienda
+  twitter          String? // Enlace al perfil de Twitter de la tienda
+  instagram        String? // Enlace al perfil de Instagram de la tienda
+  linkedin         String? // Enlace al perfil de LinkedIn de la tienda
+  // Puedes agregar más campos según las redes sociales relevantes para tu plataforma
 
   plan   Plan?   @relation(fields: [planId], references: [id])
   planId String?
@@ -35,8 +43,30 @@ model Store {
   messages Message[]
   offers   Offer[]
   chats    Chat[]
+  admin    Admin?    @relation(fields: [adminId], references: [id])
+  adminId  String?
 
+  @@index([adminId])
   @@index([planId])
+}
+
+model Admin {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  email     String    @unique
+  password  String
+  role      AdminRole @default(SUPER_ADMIN)
+
+  // Relación opcional con las tiendas que este administrador ha verificado
+  verifiedStores Store[]
+
+  @@map("admins")
+}
+
+enum AdminRole {
+  SUPER_ADMIN // Tiene permisos superiores, como la capacidad de verificar tiendas
+  ADMIN // Tiene permisos estándar
+  // Puedes agregar más roles según sea necesario
 }
 
 model User {
@@ -154,18 +184,41 @@ model Category {
 }
 
 model Plan {
-  id                   String      @id @default(cuid())
+  id                   String         @id @default(cuid())
   name                 String
   description          String
   price                Float
   offersLimit          OffersLimit // Enum para definir los límites de ofertas
-  offerPublishQuantity Int         @default(20) // Cantidad de ofertas que pueden ser publicadas
-  isFree               Boolean     @default(true) // Indica si este es un plan gratuito
+  offerPublishQuantity Int            @default(20) // Cantidad de ofertas que pueden ser publicadas
+  isFree               Boolean        @default(true) // Indica si este es un plan gratuito
+  billingEnabled       Boolean?        @default(false) // Indica si la facturación está habilitada para este plan
+  billingCycle         BillingCycle? // Ciclo de facturación (mensual, anual, etc.)
+  nextBillingDate      DateTime? // Fecha de la próxima facturación
+  paymentStatus        PaymentStatus? // Estado del pago (pendiente, pagado, vencido, etc.)
+  lastPaymentDate      DateTime? // Fecha del último pago
+  totalAmountPaid      Float? // Monto total pagado hasta la fecha
 
-  stores Store[]
-  offers Offer[]
+  features Feature[]
+  stores   Store[]
+  offers   Offer[]
 
   @@map("plans")
+}
+
+model Feature {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  priority    Int?
+  Plan        Plan?     @relation(fields: [planId], references: [id])
+  planId      String?
+
+  @@index([planId])
+  @@map("features")
 }
 
 model Chat {
@@ -219,4 +272,24 @@ enum OffersLimit {
   BASIC_50
   PRO_100
   ENTERPRISE_UNLIMITED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  // Otros estados de pago según sea necesario
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+  // Otros ciclos de facturación según sea necesario
+}
+
+enum StoreStatus {
+  ACTIVE
+  INACTIVE
+  PENDING_APPROVAL
+  // Otros estados según sea necesario
 }

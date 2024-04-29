@@ -1,6 +1,17 @@
 import { Plan } from "@prisma/client";
 
-type safePlan = Omit<Plan, "id" | "createdAt" | "updatedAt">;
+type safePlan = Omit<
+  Plan,
+  | "id"
+  | "createdAt"
+  | "updatedAt"
+  | "billingEnabled"
+  | "billingCycle"
+  | "nextBillingDate"
+  | "paymentStatus"
+  | "lastPaymentDate"
+  | "totalAmountPaid"
+>;
 
 export const mockPlan: safePlan[] = [
   {
