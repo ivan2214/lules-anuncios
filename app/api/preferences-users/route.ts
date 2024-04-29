@@ -28,8 +28,8 @@ export const updateUserPreferences = async (
       include: {
         favoriteCategories: true,
         interactions: {
-          include: {
-            offer: true,
+          where: {
+            offerId: offer?.id,
           },
         },
       },
@@ -39,11 +39,7 @@ export const updateUserPreferences = async (
       return;
     }
 
-    if (
-      user?.interactions.some(
-        (interaction) => interaction.offer.id === offer?.id
-      )
-    ) {
+    if (user.interactions.length > 0) {
       return;
     }
 

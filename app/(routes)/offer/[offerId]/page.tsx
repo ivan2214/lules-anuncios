@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { getOffer } from "@/requestDb/get-offer";
 import { ChatContent } from "./components/chat-content";
 import { ImageGallery } from "./components/image-gallery";
+import { auth } from "@/auth";
+import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 interface OfferPageProps {
   params: {
@@ -22,6 +25,30 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
 
   if (!offer) {
     return null;
+  }
+
+  const session = await auth();
+
+  const user = session?.user;
+
+  if (user && user?.id) {
+    await db.user
+      .update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          interactions: {
+            create: {
+              offerId: offer?.id,
+              viewed: true,
+            },
+          },
+        },
+      })
+      .finally(() => {
+        revalidatePath(`/`);
+      });
   }
 
   return (

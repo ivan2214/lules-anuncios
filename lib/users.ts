@@ -1,5 +1,7 @@
+"use server";
 import { db } from "@/lib/db";
 import { Category } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 // Función para que los usuarios actualicen sus preferencias
 export const updateUserPreferences = async (
@@ -18,23 +20,23 @@ export const updateUserPreferences = async (
   }
 };
 
-// Función para obtener ofertas recomendadas para un usuario
 export const getRecommendedOffers = async (
   userId?: string | null,
   take?: number
 ) => {
-  if (!userId) {
-    return await db.offer.findMany({
-      include: {
-        categories: true,
-        images: true,
-        store: true,
-        interactions: true,
-      },
-      take,
-    });
-  }
   try {
+    if (!userId) {
+      return await db.offer.findMany({
+        take,
+        include: {
+          categories: true,
+          images: true,
+          store: true,
+          interactions: true,
+        },
+      });
+    }
+
     // Obtener las preferencias del usuario
     const userPreferences =
       (
@@ -44,14 +46,82 @@ export const getRecommendedOffers = async (
         })
       )?.preferences || [];
 
-    // Obtener todas las ofertas que tienen al menos una de las categorías preferidas por el usuario
-    const recommendedOffers = await db.offer.findMany({
+    // Obtener las ofertas basadas en las preferencias del usuario
+    const offersBasedOnPreferences = await db.offer.findMany({
       where: {
         categories: {
           some: {
             name: {
               in: userPreferences,
             },
+          },
+        },
+      },
+      orderBy: {
+        interactions: {
+          _count: "desc",
+        },
+      },
+      take,
+      include: {
+        categories: true,
+        images: true,
+        store: true,
+        interactions: true,
+      },
+    });
+
+    // Obtener las ofertas que le gustaron al usuario
+    const likedOfferIds = (
+      await db.userOfferInteraction.findMany({
+        where: {
+          userId,
+          liked: true,
+        },
+        select: {
+          offerId: true,
+        },
+      })
+    ).map((interaction) => interaction.offerId);
+
+    // Obtener las ofertas que el usuario ha visto
+    const viewedOfferIds = (
+      await db.userOfferInteraction.findMany({
+        where: {
+          userId,
+          viewed: true,
+        },
+        select: {
+          offerId: true,
+        },
+      })
+    ).map((interaction) => interaction.offerId);
+
+    // Obtener las ofertas que el usuario ha visto pero no ha marcado como gustadas
+    const unlikedViewedOfferIds = (
+      await db.userOfferInteraction.findMany({
+        where: {
+          userId,
+          viewed: true,
+          liked: false,
+        },
+        select: {
+          offerId: true,
+        },
+      })
+    ).map((interaction) => interaction.offerId);
+
+    // Obtener las ofertas que no han sido recomendadas y que el usuario no ha visto ni marcado como gustadas
+    const unviewedUnlikedOffers = await db.offer.findMany({
+      where: {
+        id: {
+          notIn: [
+            ...viewedOfferIds,
+            ...likedOfferIds,
+            ...unlikedViewedOfferIds,
+          ],
+          not: {
+            in: offersBasedOnPreferences.map((offer) => offer.id),
           },
         },
       },
@@ -64,7 +134,14 @@ export const getRecommendedOffers = async (
       },
     });
 
-    if (!recommendedOffers || recommendedOffers.length === 0) {
+    // Combinar las ofertas basadas en preferencias con las no vistas ni marcadas como gustadas
+    const recommendedOffers = [
+      ...offersBasedOnPreferences,
+      ...unviewedUnlikedOffers,
+    ];
+
+    // Si no hay ofertas recomendadas, obtener ofertas generales
+    if (recommendedOffers.length === 0) {
       return await db.offer.findMany({
         take,
         include: {
@@ -76,9 +153,12 @@ export const getRecommendedOffers = async (
       });
     }
 
+    // Devolver las ofertas recomendadas
     return recommendedOffers;
   } catch (error) {
     console.error("Error al obtener ofertas recomendadas:", error);
     throw error;
+  } finally {
+    revalidatePath("/");
   }
 };

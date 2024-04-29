@@ -38,7 +38,7 @@ export const generateRandomPlan = async () => {
         PaymentStatus.PENDING,
       ]),
       lastPaymentDate: faker.date.past(),
-      totalAmountPaid: faker.datatype.float({ min: 0, max: 10000 }),
+      totalAmountPaid: faker.number.float({ min: 0, max: 10000 }),
     },
   });
 };

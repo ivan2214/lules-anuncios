@@ -79,7 +79,6 @@ model User {
   hashPassword       String?
   image              String?
   preferences        String[] // Almacena las preferencias del usuario
-  // Agregado: Campo para las categorías favoritas del usuario
   favoriteCategories Category[]             @relation("UserFavoriteCategories")
   interactions       UserOfferInteraction[]
   accounts           Account[]
@@ -127,7 +126,8 @@ model UserOfferInteraction {
   userId    String
   offer     Offer    @relation(fields: [offerId], references: [id])
   offerId   String
-  // Otros campos como "liked", "viewed", etc.
+  liked     Boolean? // Agregamos un campo para indicar si al usuario le gustó la oferta
+  viewed    Boolean? // Agregamos un campo para indicar si el usuario ha visto la oferta
 
   @@index([offerId])
   @@index([userId])
