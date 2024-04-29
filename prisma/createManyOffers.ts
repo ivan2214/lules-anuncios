@@ -1,31 +1,20 @@
 import { faker } from "@faker-js/faker";
-import { db } from "../lib/db";
-import { Offer, Image, Category, Plan, Store } from "@prisma/client";
-import bcrypt from "bcryptjs";
-import { mockPlan } from "./mocks";
-import { generateRandomStore } from "./generateRandomStore";
+
 import { generateRandomOffer } from "./generateRandomOffer";
 import { generateRandomImages } from "./generateRandomImages";
 import { generateRandomMessages } from "./generateRandomMessages";
 import { generateRandomCategories } from "./generateRandomCategories";
+import { generateRandomPlan } from "./generateRandomPlan";
+import { generateRandomStore } from "./generateRandomStore";
+import { createFeaturesForPlans } from "./generateFeatures";
 
 export const createManyOffers = async () => {
   const randomNumberOffers = faker.number.int({ min: 10, max: 45 });
   for (let i = 0; i < randomNumberOffers; i++) {
-    const randomPlanName = faker.helpers.arrayElement(mockPlan).name;
+    const plan = await generateRandomPlan();
+    const store = await generateRandomStore(plan);
 
-    const planIsAlreadyCreated = await db.plan.findFirst({
-      where: {
-        name: randomPlanName,
-      },
-    });
-
-    const store = await generateRandomStore();
-    const offer = await generateRandomOffer(
-      store,
-      planIsAlreadyCreated
-    );
-
+    const offer = await generateRandomOffer(store);
     await generateRandomCategories(offer);
     await generateRandomImages(offer);
     await generateRandomMessages(offer);
@@ -33,4 +22,7 @@ export const createManyOffers = async () => {
     console.log(`💼 Creando ofertas ${i + 1} de ${randomNumberOffers}...`);
     console.log("--------------------------------------");
   }
+  await createFeaturesForPlans();
+  console.log("--------------------------------------");
+  console.log("✅ Ofertas generadas con éxito");
 };

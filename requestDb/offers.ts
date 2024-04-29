@@ -55,7 +55,6 @@ export const getOffers = async (query?: queryParams) => {
       include: {
         categories: true,
         images: true,
-        plan: true,
         store: true,
       },
     });

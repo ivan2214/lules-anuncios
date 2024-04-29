@@ -37,8 +37,8 @@ model Store {
   linkedin         String? // Enlace al perfil de LinkedIn de la tienda
   // Puedes agregar más campos según las redes sociales relevantes para tu plataforma
 
-  plan   Plan?   @relation(fields: [planId], references: [id])
-  planId String?
+  plan   Plan   @relation(fields: [planId], references: [id])
+  planId String
 
   messages Message[]
   offers   Offer[]
@@ -150,13 +150,9 @@ model Offer {
   chat       Chat       @relation(fields: [chatId], references: [id]) // Cambiamos chats por chat y hacemos que sea opcional
   chatId     String
 
-  plan   Plan?   @relation(fields: [planId], references: [id])
-  planId String?
-
   interactions UserOfferInteraction[]
 
   @@index([storeId])
-  @@index([planId])
   @@index([chatId])
 }
 
@@ -191,7 +187,7 @@ model Plan {
   offersLimit          OffersLimit // Enum para definir los límites de ofertas
   offerPublishQuantity Int            @default(20) // Cantidad de ofertas que pueden ser publicadas
   isFree               Boolean        @default(true) // Indica si este es un plan gratuito
-  billingEnabled       Boolean?        @default(false) // Indica si la facturación está habilitada para este plan
+  billingEnabled       Boolean?       @default(false) // Indica si la facturación está habilitada para este plan
   billingCycle         BillingCycle? // Ciclo de facturación (mensual, anual, etc.)
   nextBillingDate      DateTime? // Fecha de la próxima facturación
   paymentStatus        PaymentStatus? // Estado del pago (pendiente, pagado, vencido, etc.)
@@ -200,7 +196,6 @@ model Plan {
 
   features Feature[]
   stores   Store[]
-  offers   Offer[]
 
   @@map("plans")
 }

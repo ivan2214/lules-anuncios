@@ -11,7 +11,15 @@ import { BarChartIcon, CheckIcon, ShareIcon, UsersIcon } from "lucide-react";
 import { db } from "@/lib/db";
 
 export async function Pricing() {
-  const plans = await db.plan.findMany();
+  const plans = await db.plan.findMany({
+    orderBy: {
+      price: "asc",
+    },
+    include: {
+      features: true,
+    },
+  });
+  console.log(plans);
 
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
@@ -44,14 +52,13 @@ export async function Pricing() {
                       <CheckIcon className="mr-2 h-4 w-4 text-primary" />
                       Publish up to {plan.offerPublishQuantity} offers
                     </li>
-                    <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                      Manage up to 50 client profiles
-                    </li>
-                    <li className="flex items-center">
-                      <CheckIcon className="mr-2 h-4 w-4 text-primary" />
-                      Basic analytics
-                    </li>
+
+                    {plan.features.map((feature) => (
+                      <li key={feature.id} className="flex items-center">
+                        <CheckIcon className="mr-2 h-4 w-4 text-primary" />
+                        {feature.name}
+                      </li>
+                    ))}
                   </ul>
                 </CardContent>
                 <CardFooter>

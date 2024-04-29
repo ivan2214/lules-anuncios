@@ -47,7 +47,6 @@ export const getRecommendedOffers = async (userId: string, take: number) => {
         images: true,
         store: true,
         interactions: true,
-        plan: true,
       },
     });
 
@@ -59,7 +58,6 @@ export const getRecommendedOffers = async (userId: string, take: number) => {
           images: true,
           store: true,
           interactions: true,
-          plan: true,
         },
       });
     }
