@@ -8,8 +8,6 @@ import { auth } from "@/auth";
 
 interface MadeForYouProps {}
 
-export const revalidate = 60 * 60 * 24;
-
 export const MadeForYou: React.FC<MadeForYouProps> = async () => {
   const session = await auth();
   const offers = await getRecommendedOffers(session?.user.id, 15);

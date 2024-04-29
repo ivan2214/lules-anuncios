@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { Category, Offer } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -77,5 +78,7 @@ export const updateUserPreferences = async (
   } catch (error) {
     console.error("Error al actualizar las preferencias del usuario:", error);
     throw error;
+  } finally {
+    revalidatePath("/", "page");
   }
 };
