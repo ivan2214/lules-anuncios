@@ -1,22 +1,22 @@
-import { faker } from "@faker-js/faker";
-import { db } from "../lib/db";
-import { OffersLimit, BillingCycle, PaymentStatus } from "@prisma/client";
-import { mockPlan } from "./mocks";
+import { faker } from '@faker-js/faker'
+import { db } from '../lib/db'
+import { BillingCycle, PaymentStatus } from '@prisma/client'
+import { mockPlan } from './mocks'
 
 export const generateRandomPlan = async () => {
   const randomIndex = faker.number.int({
     min: 0,
-    max: mockPlan.length - 1,
-  });
-  const selectedPlan = mockPlan[randomIndex];
+    max: mockPlan.length - 1
+  })
+  const selectedPlan = mockPlan[randomIndex]
 
   // Buscar un plan existente en la base de datos con el mismo nombre
   const existingPlan = await db.plan.findFirst({
-    where: { name: selectedPlan.name },
-  });
+    where: { name: selectedPlan.name }
+  })
 
   // Si el plan ya existe, retornarlo
-  if (existingPlan) return existingPlan;
+  if (existingPlan) return existingPlan
 
   // Si no existe, crearlo en la base de datos
   return await db.plan.create({
@@ -29,16 +29,16 @@ export const generateRandomPlan = async () => {
       billingEnabled: faker.datatype.boolean(),
       billingCycle: faker.helpers.arrayElement([
         BillingCycle.ANNUAL,
-        BillingCycle.MONTHLY,
+        BillingCycle.MONTHLY
       ]),
       nextBillingDate: faker.date.future(),
       paymentStatus: faker.helpers.arrayElement([
         PaymentStatus.OVERDUE,
         PaymentStatus.PAID,
-        PaymentStatus.PENDING,
+        PaymentStatus.PENDING
       ]),
       lastPaymentDate: faker.date.past(),
-      totalAmountPaid: faker.number.float({ min: 0, max: 10000 }),
-    },
-  });
-};
+      totalAmountPaid: faker.number.float({ min: 0, max: 10000 })
+    }
+  })
+}

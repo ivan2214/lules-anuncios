@@ -1,32 +1,25 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@ui/card";
-import { Header } from "@components/auth/header";
-import { Social } from "@components/auth/social";
-import { BackButton } from "@components/auth/back-button";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardFooter, CardHeader } from '@ui/card'
+import { Header } from '@components/auth/header'
+import { Social } from '@components/auth/social'
+import { BackButton } from '@components/auth/back-button'
+import Link from 'next/link'
+import { Button } from '../ui/button'
+import { type HTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
 
 interface CardWrapperProps {
-  children: React.ReactNode;
-  hederLabel: string;
-  backButtonLabel: string;
-  backButtonHref: string;
-  showSocial?: boolean;
-  footer?: boolean;
-  footerHref?: string;
-  footerLabel?: string;
-  className?: HTMLAttributes<HTMLDivElement>["className"];
+  children: React.ReactNode
+  hederLabel: string
+  backButtonLabel: string
+  backButtonHref: string
+  showSocial?: boolean
+  footer?: boolean
+  footerHref?: string
+  footerLabel?: string
+  className?: HTMLAttributes<HTMLDivElement>['className']
 }
 
-export default function CardWrapper({
+export default function CardWrapper ({
   children,
   hederLabel,
   backButtonLabel,
@@ -35,10 +28,10 @@ export default function CardWrapper({
   footer = true,
   footerHref,
   footerLabel,
-  className,
+  className
 }: CardWrapperProps) {
   return (
-    <Card className={cn("w-[400px] shadow-md", className)}>
+    <Card className={cn('w-[400px] shadow-md', className)}>
       <CardHeader>
         <Header label={hederLabel} />
       </CardHeader>
@@ -53,7 +46,7 @@ export default function CardWrapper({
       </CardFooter>
       {footer && footerHref && footerLabel && (
         <CardFooter>
-          <section className="flex w-full items-center flex-col gap-2">
+          <section className="flex w-full flex-col items-center gap-2">
             <span className="text-sm font-normal">{footerLabel}</span>
             <Button variant="link" className="w-full font-normal" size="sm">
               <Link href={footerHref}>Hace click aqui</Link>
@@ -62,5 +55,5 @@ export default function CardWrapper({
         </CardFooter>
       )}
     </Card>
-  );
+  )
 }

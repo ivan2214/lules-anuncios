@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '@/lib/db'
 
 export const getVerificationTokenByToken = async (token: string) => {
   try {
@@ -6,14 +6,14 @@ export const getVerificationTokenByToken = async (token: string) => {
       where: {
         token
       }
-    });
+    })
 
-    return verificationToken;
+    return verificationToken
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}
 
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
@@ -21,11 +21,11 @@ export const getVerificationTokenByEmail = async (email: string) => {
       where: {
         email
       }
-    });
+    })
 
-    return verificationToken;
+    return verificationToken
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}

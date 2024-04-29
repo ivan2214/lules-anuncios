@@ -1,28 +1,28 @@
-'use client';
+'use client'
 
-import { useState, useTransition } from 'react';
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useTransition } from 'react'
+import type * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { RegisterSchema } from '@schemas/index';
+import { RegisterSchema } from '@schemas/index'
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@ui/form'
 
-import CardWrapper from '@components/auth/card-wrapper';
-import { Input } from '@ui/input';
-import { Button } from '@ui/button';
-import { FormError } from '@components/form-error';
-import { FormSucces } from '@components/form-succes';
-import { register } from '@/actions/register';
+import CardWrapper from '@components/auth/card-wrapper'
+import { Input } from '@ui/input'
+import { Button } from '@ui/button'
+import { FormError } from '@components/form-error'
+import { FormSucces } from '@components/form-succes'
+import { register } from '@/actions/register'
 
-export type RegisterFormValues = z.infer<typeof RegisterSchema>;
+export type RegisterFormValues = z.infer<typeof RegisterSchema>
 
 export const RegisterForm = () => {
-  const [error, setError] = useState<string | undefined>('');
+  const [error, setError] = useState<string | undefined>('')
 
-  const [success, setSuccess] = useState<string | undefined>('');
-  const [isPending, startTransition] = useTransition();
+  const [success, setSuccess] = useState<string | undefined>('')
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<RegisterFormValues>({
     defaultValues: {
@@ -31,18 +31,25 @@ export const RegisterForm = () => {
       name: ''
     },
     resolver: zodResolver(RegisterSchema)
-  });
+  })
 
-  function onSubmit(values: RegisterFormValues) {
-    setError('');
-    setSuccess('');
+  function onSubmit (values: RegisterFormValues) {
+    setError('')
+    setSuccess('')
 
     startTransition(() => {
-      register(values).then((res) => {
-        setError(res.error);
-        setSuccess(res.success);
-      });
-    });
+      register(values)
+        .then((res) => {
+          setError(res.error)
+          setSuccess(res.success)
+        })
+        .catch((error) => {
+          console.error(error)
+          if (error instanceof Error) {
+            setError(error.message)
+          }
+        })
+    })
   }
 
   return (
@@ -115,5 +122,5 @@ export const RegisterForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  );
-};
+  )
+}

@@ -1,8 +1,8 @@
-import { type ClassValue, clsx } from "clsx"
-import { ReadonlyURLSearchParams } from "next/navigation"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx'
+import { type ReadonlyURLSearchParams } from 'next/navigation'
+import { twMerge } from 'tailwind-merge'
 
-export function cn(...inputs: ClassValue[]) {
+export function cn (...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 

@@ -1,10 +1,10 @@
-import { db } from "@/lib/db";
+import { db } from '@/lib/db'
 
 export const getOffer = async (offerId: string) => {
   try {
     const offer = await db.offer.findUnique({
       where: {
-        id: offerId,
+        id: offerId
       },
       include: {
         store: true,
@@ -16,16 +16,16 @@ export const getOffer = async (offerId: string) => {
             messages: {
               include: {
                 user: true,
-                store: true,
-              },
-            },
-          },
-        },
-      },
-    });
+                store: true
+              }
+            }
+          }
+        }
+      }
+    })
 
-    return offer;
+    return offer
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}

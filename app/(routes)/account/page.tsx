@@ -1,28 +1,28 @@
-import { auth } from "@/auth";
-import Icon from "@/components/ui/icon";
+import { auth } from '@/auth'
+import Icon from '@/components/ui/icon'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { redirect } from "next/navigation";
-import React from "react";
-import ChangeImage from "@/app/(routes)/account/components/change-image";
+  CardTitle
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { redirect } from 'next/navigation'
+import React from 'react'
+import ChangeImage from '@/app/(routes)/account/components/change-image'
 
 const ProfilePage = async () => {
-  const session = await auth();
+  const session = await auth()
 
   if (!session) {
-    redirect("/auth/login");
+    redirect('/auth/login')
   }
 
-  const { user } = session;
+  const { user } = session
 
   if (!user) {
-    redirect("/auth/login");
+    redirect('/auth/login')
   }
 
   return (
@@ -49,7 +49,7 @@ const ProfilePage = async () => {
                         <Icon
                           className="h-8 w-8"
                           name={
-                            account.provider === "Github" ? "github" : "chrome"
+                            account.provider === 'Github' ? 'github' : 'chrome'
                           }
                         />
                       </div>
@@ -65,7 +65,7 @@ const ProfilePage = async () => {
                   ))}
                 </section>
               )}
-              {(!user.accounts || !user?.accounts?.length) && (
+              {(!user.accounts?.length) && (
                 <p className="text-sm font-normal tracking-wider text-gray-500">
                   No hay cuentas conectadas
                 </p>
@@ -115,7 +115,7 @@ const ProfilePage = async () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage

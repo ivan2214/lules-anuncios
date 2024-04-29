@@ -1,8 +1,5 @@
-import { auth } from "@/auth";
-
 const UserOffersPage = async () => {
-  const session = await auth();
-  return <div>UserOffers</div>;
-};
+  return <div>UserOffers</div>
+}
 
-export default UserOffersPage;
+export default UserOffersPage

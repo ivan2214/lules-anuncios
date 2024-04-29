@@ -18,4 +18,3 @@ export async function updateImageUser (userId: string, image: string) {
     console.log(error)
   }
 }
-

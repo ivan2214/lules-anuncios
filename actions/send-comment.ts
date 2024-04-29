@@ -1,28 +1,24 @@
-"use server";
+'use server'
 
-import bcrypt from "bcryptjs";
-
-import { db } from "@/lib/db";
-import { MessageFormValues } from "@/app/(routes)/offer/[offerId]/components/chat-message-form";
-import { MessageSchema } from "@/schemas";
-import { Chat } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { db } from '@/lib/db'
+import { type MessageFormValues } from '@/app/(routes)/offer/[offerId]/components/chat-message-form'
+import { MessageSchema } from '@/schemas'
+import { revalidatePath } from 'next/cache'
 
 export const sendComment = async (values: MessageFormValues) => {
-  const validatedFields = MessageSchema.safeParse(values);
-  let chat: Chat;
+  const validatedFields = MessageSchema.safeParse(values)
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: 'Invalid fields!' }
   }
 
-  const { chatId, content, sender, senderId, storeId } = validatedFields.data;
+  const { chatId, content, sender, senderId, storeId } = validatedFields.data
 
   if (chatId) {
-    if (sender === "USER") {
-      chat = await db.chat.update({
+    if (sender === 'USER') {
+      await db.chat.update({
         where: {
-          id: chatId,
+          id: chatId
         },
         data: {
           messages: {
@@ -31,19 +27,19 @@ export const sendComment = async (values: MessageFormValues) => {
               sender,
               user: {
                 connect: {
-                  id: senderId,
-                },
-              },
-            },
-          },
-        },
-      });
+                  id: senderId
+                }
+              }
+            }
+          }
+        }
+      })
     }
 
-    if (sender === "STORE") {
-      chat = await db.chat.update({
+    if (sender === 'STORE') {
+      await db.chat.update({
         where: {
-          id: chatId,
+          id: chatId
         },
         data: {
           messages: {
@@ -52,24 +48,24 @@ export const sendComment = async (values: MessageFormValues) => {
               sender,
               store: {
                 connect: {
-                  id: senderId,
-                },
-              },
-            },
-          },
-        },
-      });
+                  id: senderId
+                }
+              }
+            }
+          }
+        }
+      })
     }
   }
 
-  if (!chatId || chatId === "" || chatId === null) {
-    if (sender === "USER") {
-      chat = await db.chat.create({
+  if (!chatId || chatId === '' || chatId === null) {
+    if (sender === 'USER') {
+      await db.chat.create({
         data: {
           store: {
             connect: {
-              id: storeId,
-            },
+              id: storeId
+            }
           },
           messages: {
             create: {
@@ -77,22 +73,22 @@ export const sendComment = async (values: MessageFormValues) => {
               sender,
               user: {
                 connect: {
-                  id: senderId,
-                },
-              },
-            },
-          },
-        },
-      });
+                  id: senderId
+                }
+              }
+            }
+          }
+        }
+      })
     }
 
-    if (sender === "STORE") {
-      chat = await db.chat.create({
+    if (sender === 'STORE') {
+      await db.chat.create({
         data: {
           store: {
             connect: {
-              id: storeId,
-            },
+              id: storeId
+            }
           },
           messages: {
             create: {
@@ -100,14 +96,14 @@ export const sendComment = async (values: MessageFormValues) => {
               sender,
               store: {
                 connect: {
-                  id: senderId,
-                },
-              },
-            },
-          },
-        },
-      });
+                  id: senderId
+                }
+              }
+            }
+          }
+        }
+      })
     }
   }
-  revalidatePath("/offer/[offerId]");
-};
+  revalidatePath('/offer/[offerId]')
+}

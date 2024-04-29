@@ -1,0 +1,9 @@
+**/*.config.js
+**/*.config.ts
+**/*.yaml
+**/*.eslintrc.js
+**/*.config.cjs
+**/*.config.mjs
+**/*.config.
+**/*.eslintrc.js
+next-env.d.ts

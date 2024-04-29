@@ -1,7 +1,7 @@
-"use server";
-import { db } from "@/lib/db";
-import { Category } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+'use server'
+import { db } from '@/lib/db'
+import { type Category } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
 
 // Función para que los usuarios actualicen sus preferencias
 export const updateUserPreferences = async (
@@ -12,13 +12,13 @@ export const updateUserPreferences = async (
   try {
     await db.user.update({
       where: { id: userId },
-      data: { preferences, favoriteCategories: { set: favoriteCategories } },
-    });
+      data: { preferences, favoriteCategories: { set: favoriteCategories } }
+    })
   } catch (error) {
-    console.error("Error al actualizar las preferencias del usuario:", error);
-    throw error;
+    console.error('Error al actualizar las preferencias del usuario:', error)
+    throw error
   }
-};
+}
 
 export const getRecommendedOffers = async (
   userId?: string | null,
@@ -32,9 +32,9 @@ export const getRecommendedOffers = async (
           categories: true,
           images: true,
           store: true,
-          interactions: true,
-        },
-      });
+          interactions: true
+        }
+      })
     }
 
     // Obtener las preferencias del usuario
@@ -42,9 +42,9 @@ export const getRecommendedOffers = async (
       (
         await db.user.findUnique({
           where: { id: userId },
-          select: { preferences: true },
+          select: { preferences: true }
         })
-      )?.preferences || [];
+      )?.preferences ?? []
 
     // Obtener las ofertas basadas en las preferencias del usuario
     const offersBasedOnPreferences = await db.offer.findMany({
@@ -52,50 +52,50 @@ export const getRecommendedOffers = async (
         categories: {
           some: {
             name: {
-              in: userPreferences,
-            },
-          },
-        },
+              in: userPreferences
+            }
+          }
+        }
       },
       orderBy: {
         interactions: {
-          _count: "desc",
-        },
+          _count: 'desc'
+        }
       },
       take,
       include: {
         categories: true,
         images: true,
         store: true,
-        interactions: true,
-      },
-    });
+        interactions: true
+      }
+    })
 
     // Obtener las ofertas que le gustaron al usuario
     const likedOfferIds = (
       await db.userOfferInteraction.findMany({
         where: {
           userId,
-          liked: true,
+          liked: true
         },
         select: {
-          offerId: true,
-        },
+          offerId: true
+        }
       })
-    ).map((interaction) => interaction.offerId);
+    ).map((interaction) => interaction.offerId)
 
     // Obtener las ofertas que el usuario ha visto
     const viewedOfferIds = (
       await db.userOfferInteraction.findMany({
         where: {
           userId,
-          viewed: true,
+          viewed: true
         },
         select: {
-          offerId: true,
-        },
+          offerId: true
+        }
       })
-    ).map((interaction) => interaction.offerId);
+    ).map((interaction) => interaction.offerId)
 
     // Obtener las ofertas que el usuario ha visto pero no ha marcado como gustadas
     const unlikedViewedOfferIds = (
@@ -103,13 +103,13 @@ export const getRecommendedOffers = async (
         where: {
           userId,
           viewed: true,
-          liked: false,
+          liked: false
         },
         select: {
-          offerId: true,
-        },
+          offerId: true
+        }
       })
-    ).map((interaction) => interaction.offerId);
+    ).map((interaction) => interaction.offerId)
 
     // Obtener las ofertas que no han sido recomendadas y que el usuario no ha visto ni marcado como gustadas
     const unviewedUnlikedOffers = await db.offer.findMany({
@@ -118,27 +118,27 @@ export const getRecommendedOffers = async (
           notIn: [
             ...viewedOfferIds,
             ...likedOfferIds,
-            ...unlikedViewedOfferIds,
+            ...unlikedViewedOfferIds
           ],
           not: {
-            in: offersBasedOnPreferences.map((offer) => offer.id),
-          },
-        },
+            in: offersBasedOnPreferences.map((offer) => offer.id)
+          }
+        }
       },
       take,
       include: {
         categories: true,
         images: true,
         store: true,
-        interactions: true,
-      },
-    });
+        interactions: true
+      }
+    })
 
     // Combinar las ofertas basadas en preferencias con las no vistas ni marcadas como gustadas
     const recommendedOffers = [
       ...offersBasedOnPreferences,
-      ...unviewedUnlikedOffers,
-    ];
+      ...unviewedUnlikedOffers
+    ]
 
     // Si no hay ofertas recomendadas, obtener ofertas generales
     if (recommendedOffers.length === 0) {
@@ -148,17 +148,17 @@ export const getRecommendedOffers = async (
           categories: true,
           images: true,
           store: true,
-          interactions: true,
-        },
-      });
+          interactions: true
+        }
+      })
     }
 
     // Devolver las ofertas recomendadas
-    return recommendedOffers;
+    return recommendedOffers
   } catch (error) {
-    console.error("Error al obtener ofertas recomendadas:", error);
-    throw error;
+    console.error('Error al obtener ofertas recomendadas:', error)
+    throw error
   } finally {
-    revalidatePath("/");
+    revalidatePath('/')
   }
-};
+}

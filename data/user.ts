@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '@/lib/db'
 
 export const getUserByEmail = async (email: string) => {
   try {
@@ -6,14 +6,14 @@ export const getUserByEmail = async (email: string) => {
       where: {
         email
       }
-    });
+    })
 
-    return user;
+    return user
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}
 
 export const getUserById = async (id: string) => {
   try {
@@ -21,14 +21,14 @@ export const getUserById = async (id: string) => {
       where: {
         id
       },
-      include:{
+      include: {
         accounts: true
       }
-    });
+    })
 
-    return user;
+    return user
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}

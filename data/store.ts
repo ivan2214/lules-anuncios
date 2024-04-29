@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '@/lib/db'
 
 export const getStoreByEmail = async (email: string) => {
   try {
@@ -6,30 +6,30 @@ export const getStoreByEmail = async (email: string) => {
       where: {
         email
       }
-    });
+    })
 
-    return store;
+    return store
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}
 
 export const getStoreById = async (id?: string) => {
-  if (!id) return null;
+  if (!id) return null
   try {
     const store = await db.store.findUnique({
       where: {
         id
       },
-      include:{
+      include: {
         offers: true
       }
-    });
+    })
 
-    return store;
+    return store
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}

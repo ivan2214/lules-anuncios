@@ -1,4 +1,4 @@
-import { CreateOfferForm } from "@/app/(routes)/create-offer/components/create-offer-form";
+import { CreateOfferForm } from '@/app/(routes)/create-offer/components/create-offer-form'
 
 const CreateOfferPage = () => {
   return (
@@ -9,7 +9,7 @@ const CreateOfferPage = () => {
       </p>
       <CreateOfferForm />
     </section>
-  );
-};
+  )
+}
 
-export default CreateOfferPage;
+export default CreateOfferPage

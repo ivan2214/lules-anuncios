@@ -1,76 +1,73 @@
-"use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { TrashIcon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { createUrl } from "@/lib/utils";
-import { ParamsOffersPageProps } from "../page";
+'use client'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { TrashIcon } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { type ParamsOffersPageProps } from '../page'
 
 interface QueryComponentProps {
-  searchParams?: ParamsOffersPageProps;
+  searchParams?: ParamsOffersPageProps
 }
 
-export const QueryComponent: React.FC<QueryComponentProps> = ({
-  searchParams,
-}) => {
-  const { sort, filter, category, search, store } = searchParams || {};
-  const router = useRouter();
-  const pathname = usePathname();
-  let categoriesArray = category?.split(",");
+export const QueryComponent: React.FC<QueryComponentProps> = ({ searchParams }) => {
+  const { sort, filter, category, search, store } = searchParams ?? {}
+  const router = useRouter()
+  const pathname = usePathname()
+  let categoriesArray = category?.split(',')
 
   const removeQuery = ({
     param,
-    value,
+    value
   }: {
-    param: "category" | "search" | "sort" | "filter" | "store";
-    value?: string;
+    param: 'category' | 'search' | 'sort' | 'filter' | 'store'
+    value?: string
   }) => {
-    const params = { ...searchParams };
+    const params = { ...searchParams }
 
-    if (param === "search") {
-      delete params.search;
+    if (param === 'search') {
+      delete params.search
     }
 
-    if (param === "sort") {
-      delete params.sort;
+    if (param === 'sort') {
+      delete params.sort
     }
 
-    if (param === "filter") {
-      delete params.filter;
+    if (param === 'filter') {
+      delete params.filter
     }
 
-    if (param === "store") {
-      delete params.store;
+    if (param === 'store') {
+      delete params.store
     }
 
-    if (param === "category" && value) {
+    if (param === 'category' && value) {
       const updatedCategories = category
-        ?.split(",")
+        ?.split(',')
         .filter((cat) => cat !== value)
-        .join(",");
+        .join(',')
       if (updatedCategories) {
-        params.category = updatedCategories;
+        params.category = updatedCategories
       } else {
-        delete params.category;
+        delete params.category
       }
     }
 
-    const queryParams = new URLSearchParams(params).toString();
-    const url = `${pathname}?${queryParams}`;
+    const queryParams = new URLSearchParams(params).toString()
+    const url = `${pathname}?${queryParams}`
 
-    router.push(url);
-    router.refresh();
-  };
+    router.push(url)
+    router.refresh()
+  }
 
   const clearAll = () => {
-    categoriesArray = [];
-    router.push(`${pathname}`);
-    router.refresh();
-  };
+    categoriesArray = []
+    router.push(`${pathname}`)
+    router.refresh()
+  }
 
   return (
-    <div className="flex lg:justify-between lg:items-center lg:flex-row flex-col gap-4 lg:gap-0">
-      <div className="mt-4 flex flex-wrap gap-2 w-full">
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
+      <div className="mt-4 flex w-full flex-wrap gap-2">
         {category &&
           categoriesArray?.map((category) => (
             <Badge
@@ -80,12 +77,12 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
             >
               {category}
               <Button
-                onClick={() =>
+                onClick={() => {
                   removeQuery({
-                    param: "category",
-                    value: category,
+                    param: 'category',
+                    value: category
                   })
-                }
+                }}
                 variant="ghost"
                 size="icon"
               >
@@ -94,18 +91,15 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
             </Badge>
           ))}
         {filter && (
-          <Badge
-            className="flex items-center justify-between capitalize"
-            variant="outline"
-          >
+          <Badge className="flex items-center justify-between capitalize" variant="outline">
             {filter}
             <Button
-              onClick={() =>
+              onClick={() => {
                 removeQuery({
-                  param: "filter",
-                  value: filter,
+                  param: 'filter',
+                  value: filter
                 })
-              }
+              }}
               variant="ghost"
               size="icon"
             >
@@ -114,18 +108,15 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
           </Badge>
         )}
         {sort && (
-          <Badge
-            className="flex items-center justify-between capitalize"
-            variant="outline"
-          >
+          <Badge className="flex items-center justify-between capitalize" variant="outline">
             {sort}
             <Button
-              onClick={() =>
+              onClick={() => {
                 removeQuery({
-                  param: "sort",
-                  value: sort,
+                  param: 'sort',
+                  value: sort
                 })
-              }
+              }}
               variant="ghost"
               size="icon"
             >
@@ -134,18 +125,15 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
           </Badge>
         )}
         {search && (
-          <Badge
-            className="flex items-center justify-between capitalize"
-            variant="outline"
-          >
+          <Badge className="flex items-center justify-between capitalize" variant="outline">
             {search}
             <Button
-              onClick={() =>
+              onClick={() => {
                 removeQuery({
-                  param: "search",
-                  value: search,
+                  param: 'search',
+                  value: search
                 })
-              }
+              }}
               variant="ghost"
               size="icon"
             >
@@ -154,18 +142,15 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
           </Badge>
         )}
         {store && (
-          <Badge
-            className="flex items-center justify-between capitalize"
-            variant="outline"
-          >
+          <Badge className="flex items-center justify-between capitalize" variant="outline">
             {store}
             <Button
-              onClick={() =>
+              onClick={() => {
                 removeQuery({
-                  param: "store",
-                  value: store,
+                  param: 'store',
+                  value: store
                 })
-              }
+              }}
               variant="ghost"
               size="icon"
             >
@@ -174,14 +159,10 @@ export const QueryComponent: React.FC<QueryComponentProps> = ({
           </Badge>
         )}
       </div>
-      <Button
-        className="flex items-center gap-2 w-fit "
-        onClick={clearAll}
-        variant="destructive"
-      >
+      <Button className="flex w-fit items-center gap-2 " onClick={clearAll} variant="destructive">
         Borrar todos
         <TrashIcon className="h-4 w-4" />
       </Button>
     </div>
-  );
-};
+  )
+}

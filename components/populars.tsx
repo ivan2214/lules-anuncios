@@ -1,9 +1,8 @@
-import Link from "next/link";
-import Icon from "./ui/icon";
-import { db } from "@/lib/db";
-import { Badge } from "./ui/badge";
+import Link from 'next/link'
+import { db } from '@/lib/db'
+import { Badge } from './ui/badge'
 
-export async function Populars() {
+export async function Populars () {
   const categories = await db.category.findMany({
     take: 5,
     select: {
@@ -11,35 +10,33 @@ export async function Populars() {
         select: {
           images: {
             select: {
-              url: true,
-            },
-          },
-        },
+              url: true
+            }
+          }
+        }
       },
-      name: true,
-    },
-  });
+      name: true
+    }
+  })
 
   const stores = await db.store.findMany({
     take: 5,
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc'
     },
     include: {
-      offers: true,
-    },
-  });
+      offers: true
+    }
+  })
   return (
-    <section className="w-full flex flex-col items-start gap-y-10">
+    <section className="flex w-full flex-col items-start gap-y-10">
       <div className="flex w-full items-center justify-between">
-        <h2 className="text-2xl font-semibold tracking-tight">
-          Popular stores
-        </h2>
+        <h2 className="text-2xl font-semibold tracking-tight">Popular stores</h2>
       </div>
       <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
         {stores.map((store) => (
           <Link
-            className="flex flex-col gap-2 rounded-md border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white p-4"
+            className="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-4 shadow-md transition-shadow duration-300 hover:shadow-2xl"
             href={`/offers?store=${store.id}`}
             key={store.name}
           >
@@ -54,20 +51,18 @@ export async function Populars() {
         ))}
       </div>
       <div className="flex w-full items-center justify-between">
-        <h2 className="text-2xl font-semibold tracking-tight">
-          Popular categories
-        </h2>
+        <h2 className="text-2xl font-semibold tracking-tight">Popular categories</h2>
       </div>
       <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
         {categories.map((category) => (
           <Link
-            className="flex flex-col gap-y-4 rounded-md border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white overflow-hidden"
+            className="flex flex-col gap-y-4 overflow-hidden rounded-md border border-gray-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-2xl"
             href={`/offers?category=${category?.name}`}
             key={category.name}
           >
-            <div className="w-full h-32">
+            <div className="h-32 w-full">
               <img
-                className="w-full h-full object-cover  aspect-square"
+                className="aspect-square h-full w-full  object-cover"
                 src={category.offers[0].images[0].url}
                 alt=""
               />
@@ -80,5 +75,5 @@ export async function Populars() {
         ))}
       </div>
     </section>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import { Populars } from "@/components/populars";
-import { Pricing } from "@/components/pricing";
-import Link from "next/link";
-import { MadeForYou } from "@/components/made-for-you";
+import { Populars } from '@/components/populars'
+import { Pricing } from '@/components/pricing'
+import Link from 'next/link'
+import { MadeForYou } from '@/components/made-for-you'
 
 const page = () => {
   return (
@@ -30,8 +30,8 @@ const page = () => {
             height={400}
             src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
             style={{
-              aspectRatio: "600/400",
-              objectFit: "cover",
+              aspectRatio: '600/400',
+              objectFit: 'cover'
             }}
             width={600}
           />
@@ -63,7 +63,7 @@ const page = () => {
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default page;
+export default page

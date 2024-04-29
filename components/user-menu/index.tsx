@@ -1,52 +1,39 @@
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  PopoverTrigger
+} from '@/components/ui/popover'
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
-import Icon, { IconProps } from "../ui/icon";
-import { Separator } from "../ui/separator";
-import { User } from "next-auth";
-import { signOut } from "next-auth/react";
-import { Store } from "@prisma/client";
-import { Badge } from "../ui/badge";
+import { type IconProps } from '../ui/icon'
+import { Separator } from '../ui/separator'
+import { type User } from 'next-auth'
+import { signOut } from 'next-auth/react'
+import { type Store } from '@prisma/client'
+import { Badge } from '../ui/badge'
 
 export interface Route {
-  name: string;
-  icon?: IconProps["name"];
-  href: string;
+  name: string
+  icon?: IconProps['name']
+  href: string
 }
 
 const routesUser: Route[] = [
   {
-    name: "Cuenta",
-    icon: "user",
-    href: "/account",
+    name: 'Cuenta',
+    icon: 'user',
+    href: '/account'
   },
   {
-    name: "Ayuda",
-    icon: "badge-help",
-    href: "/help",
-  },
-];
+    name: 'Ayuda',
+    icon: 'badge-help',
+    href: '/help'
+  }
+]
 
-const routesStore: Route[] = [
-  {
-    name: "Cuenta",
-    icon: "user",
-    href: "/account",
-  },
-  {
-    name: "Ayuda",
-    icon: "badge-help",
-    href: "/help",
-  },
-];
-
-const UserMenu = ({ user, store }: { user: User; store?: Store | null }) => {
+const UserMenu = ({ user, store }: { user: User, store?: Store | null }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -59,10 +46,10 @@ const UserMenu = ({ user, store }: { user: User; store?: Store | null }) => {
             alt="Avatar"
             className="rounded-full object-cover"
             height="35"
-            src={user.image || "https://i.pravatar.cc/300"}
+            src={user.image ?? 'https://i.pravatar.cc/300'}
             style={{
-              aspectRatio: "35/35",
-              objectFit: "cover",
+              aspectRatio: '35/35',
+              objectFit: 'cover'
             }}
             width="35"
           />
@@ -77,7 +64,7 @@ const UserMenu = ({ user, store }: { user: User; store?: Store | null }) => {
               <h3 className="text-xl font-semibold">{store.name}</h3>
               <p className="text-base font-light text-muted-foreground">{user.email}</p>
               <div className="flex items-center gap-2 text-base font-normal">
-                Cuenta tipo 
+                Cuenta tipo
                 <Badge>Tienda</Badge>
               </div>
             </section>
@@ -94,11 +81,11 @@ const UserMenu = ({ user, store }: { user: User; store?: Store | null }) => {
             </Link>
           ))}
           <Separator />
-          <Button onClick={() => signOut()}>Cerrar sesión</Button>
+          <Button onClick={async () => { await signOut() }}>Cerrar sesión</Button>
         </div>
       </PopoverContent>
     </Popover>
-  );
-};
+  )
+}
 
-export default UserMenu;
+export default UserMenu

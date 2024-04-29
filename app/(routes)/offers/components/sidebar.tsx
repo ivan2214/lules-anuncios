@@ -1,30 +1,22 @@
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from '@/lib/utils'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
-import { Playlist } from "../data/playlists";
-import { Category, Store } from "@prisma/client";
-import Link from "next/link";
+import { type Playlist } from '../data/playlists'
+import { type Category, type Store } from '@prisma/client'
+import Link from 'next/link'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  playlists: Playlist[];
-  stores?: Store[];
-  categories?: Category[];
+  playlists: Playlist[]
+  stores?: Store[]
+  categories?: Category[]
 }
 
-export function Sidebar({
-  className,
-  playlists,
-  categories,
-  stores,
-}: SidebarProps) {
+export function Sidebar ({ className, playlists, categories, stores }: SidebarProps) {
   return (
-    <div className={cn("pb-12", className)}>
-      <div className="space-y-4 py-4 sticky top-0">
+    <div className={cn('pb-12', className)}>
+      <div className="sticky top-0 space-y-4 py-4">
         <div className="py-2">
-          <h2 className="relative px-7 text-lg font-semibold tracking-tight">
-            Stores
-          </h2>
+          <h2 className="relative px-7 text-lg font-semibold tracking-tight">Stores</h2>
           <ScrollArea className="h-[300px] px-1">
             <div className="space-y-1 p-2">
               {stores?.map((store) => (
@@ -40,9 +32,7 @@ export function Sidebar({
           </ScrollArea>
         </div>
         <div className="py-2">
-          <h2 className="relative px-7 text-lg font-semibold tracking-tight">
-            Categories
-          </h2>
+          <h2 className="relative px-7 text-lg font-semibold tracking-tight">Categories</h2>
           <ScrollArea className="h-[400px] px-1">
             <div className="space-y-1 p-2">
               {categories?.map((category) => (
@@ -59,5 +49,5 @@ export function Sidebar({
         </div>
       </div>
     </div>
-  );
+  )
 }

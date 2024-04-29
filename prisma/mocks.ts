@@ -1,41 +1,41 @@
-import { Plan } from "@prisma/client";
+import { type Plan } from '@prisma/client'
 
 type safePlan = Omit<
-  Plan,
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "billingEnabled"
-  | "billingCycle"
-  | "nextBillingDate"
-  | "paymentStatus"
-  | "lastPaymentDate"
-  | "totalAmountPaid"
->;
+Plan,
+| 'id'
+| 'createdAt'
+| 'updatedAt'
+| 'billingEnabled'
+| 'billingCycle'
+| 'nextBillingDate'
+| 'paymentStatus'
+| 'lastPaymentDate'
+| 'totalAmountPaid'
+>
 
 export const mockPlan: safePlan[] = [
   {
-    name: "Free",
-    description: "Free plan",
+    name: 'Free',
+    description: 'Free plan',
     price: 0,
-    offersLimit: "FREETIER_20",
+    offersLimit: 'FREETIER_20',
     offerPublishQuantity: 20,
-    isFree: true,
+    isFree: true
   },
   {
-    name: "Basic",
-    description: "Basic plan",
+    name: 'Basic',
+    description: 'Basic plan',
     price: 30,
-    offersLimit: "BASIC_50",
+    offersLimit: 'BASIC_50',
     offerPublishQuantity: 50,
-    isFree: false,
+    isFree: false
   },
   {
-    name: "Pro",
-    description: "Pro plan",
+    name: 'Pro',
+    description: 'Pro plan',
     price: 100,
-    offersLimit: "PRO_100",
+    offersLimit: 'PRO_100',
     offerPublishQuantity: 100,
-    isFree: false,
-  },
-];
+    isFree: false
+  }
+]

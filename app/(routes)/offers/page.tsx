@@ -1,31 +1,31 @@
-import { Separator } from "@/components/ui/separator";
-import { SearchBar } from "@/components/search-bar";
-import { Suspense } from "react";
-import SearchBarFallback from "@/components/fallbacks/search-bar-fallback";
+import { Separator } from '@/components/ui/separator'
+import { SearchBar } from '@/components/search-bar'
+import { Suspense } from 'react'
+import SearchBarFallback from '@/components/fallbacks/search-bar-fallback'
 
-import { getOffers } from "@/requestDb/offers";
-import { OfferArticle } from "@/components/offer-article";
-import { QueryComponent } from "@/app/(routes)/offers/components/query-component";
+import { getOffers } from '@/requestDb/offers'
+import { OfferArticle } from '@/components/offer-article'
+import { QueryComponent } from '@/app/(routes)/offers/components/query-component'
 
 export interface ParamsOffersPageProps {
-  sort?: string;
-  filter?: string;
-  category?: string;
-  search?: string;
-  store?: string;
-  take?: string;
-  skip?: string;
-  orderBy?: "asc" | "desc";
+  sort?: string
+  filter?: string
+  category?: string
+  search?: string
+  store?: string
+  take?: string
+  skip?: string
+  orderBy?: 'asc' | 'desc'
 }
 
-export default async function OffersPage({
-  searchParams,
+export default async function OffersPage ({
+  searchParams
 }: {
-  searchParams?: ParamsOffersPageProps;
+  searchParams?: ParamsOffersPageProps
 }) {
-  const offers = await getOffers(searchParams);
+  const offers = await getOffers(searchParams)
 
-  const hasQuery = searchParams && Object.keys(searchParams).length > 0;
+  const hasQuery = searchParams && Object.keys(searchParams).length > 0
 
   return (
     <main className="col-span-5 lg:col-span-4 border-t lg:border-l">
@@ -60,5 +60,5 @@ export default async function OffersPage({
         </section>
       </section>
     </main>
-  );
+  )
 }

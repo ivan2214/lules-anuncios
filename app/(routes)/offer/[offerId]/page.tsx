@@ -1,54 +1,54 @@
-import { Button } from "@/components/ui/button";
-import { getOffer } from "@/requestDb/get-offer";
-import { ChatContent } from "./components/chat-content";
-import { ImageGallery } from "./components/image-gallery";
-import { auth } from "@/auth";
-import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { Button } from '@/components/ui/button'
+import { getOffer } from '@/requestDb/get-offer'
+import { ChatContent } from './components/chat-content'
+import { ImageGallery } from './components/image-gallery'
+import { auth } from '@/auth'
+import { db } from '@/lib/db'
+import { revalidatePath } from 'next/cache'
 
 interface OfferPageProps {
   params: {
-    offerId?: string;
-  };
+    offerId?: string
+  }
 }
 
 const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
-  const offerId = params?.offerId;
+  const offerId = params?.offerId
 
   if (!offerId) {
-    return null;
+    return null
   }
 
-  const offer = await getOffer(offerId);
+  const offer = await getOffer(offerId)
 
-  const chat = offer?.chat;
+  const chat = offer?.chat
 
   if (!offer) {
-    return null;
+    return null
   }
 
-  const session = await auth();
+  const session = await auth()
 
-  const user = session?.user;
+  const user = session?.user
 
   if (user && user?.id) {
     await db.user
       .update({
         where: {
-          id: user?.id,
+          id: user?.id
         },
         data: {
           interactions: {
             create: {
               offerId: offer?.id,
-              viewed: true,
-            },
-          },
-        },
+              viewed: true
+            }
+          }
+        }
       })
       .finally(() => {
-        revalidatePath(`/`);
-      });
+        revalidatePath('/')
+      })
   }
 
   return (
@@ -64,9 +64,9 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
               fill="none"
               height="24"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
               width="24"
               xmlns="http://www.w3.org/2000/svg"
@@ -77,9 +77,9 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
               fill="none"
               height="24"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
               width="24"
               xmlns="http://www.w3.org/2000/svg"
@@ -90,9 +90,9 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
               fill="none"
               height="24"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
               width="24"
               xmlns="http://www.w3.org/2000/svg"
@@ -103,9 +103,9 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
               fill="none"
               height="24"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
               width="24"
               xmlns="http://www.w3.org/2000/svg"
@@ -116,9 +116,9 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
               fill="none"
               height="24"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
               width="24"
               xmlns="http://www.w3.org/2000/svg"
@@ -150,8 +150,8 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
             Add to Cart
           </Button>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            {offer?.store.name} •{" "}
-            {offer?.categories.map((category) => category.name).join(", ")}
+            {offer?.store.name} •{' '}
+            {offer?.categories.map((category) => category.name).join(', ')}
           </p>
         </div>
       </section>
@@ -159,7 +159,7 @@ const OfferPage: React.FC<OfferPageProps> = async ({ params }) => {
         <ChatContent store={offer?.store} chat={chat} />
       </section>
     </section>
-  );
-};
+  )
+}
 
-export default OfferPage;
+export default OfferPage

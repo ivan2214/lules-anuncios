@@ -1,63 +1,66 @@
-"use client";
+'use client'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { MessageSchema } from "@/schemas";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { SendIcon } from "lucide-react";
-import { MessageSender } from "@prisma/client";
-import { sendComment } from "@/actions/send-comment";
-import { useTransition } from "react";
-
+  FormMessage
+} from '@/components/ui/form'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import type * as z from 'zod'
+import { MessageSchema } from '@/schemas'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { SendIcon } from 'lucide-react'
+import { type MessageSender } from '@prisma/client'
+import { sendComment } from '@/actions/send-comment'
+import { useTransition } from 'react'
 
 interface ChatMessageForrmProps {
-  chatId?: string;
-  sender: MessageSender;
-  senderId?: string;
-  storeId?: string;
+  chatId?: string
+  sender: MessageSender
+  senderId?: string
+  storeId?: string
 }
 
-export type MessageFormValues = z.infer<typeof MessageSchema>;
+export type MessageFormValues = z.infer<typeof MessageSchema>
 
 export const ChatMessageForrm: React.FC<ChatMessageForrmProps> = ({
   chatId,
   sender,
   senderId,
-  storeId,
+  storeId
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<MessageFormValues>({
     defaultValues: {
-      content: "",
-      sender: sender,
-      chatId: chatId,
-      senderId: senderId || "",
-      storeId: storeId || "",
+      content: '',
+      sender,
+      chatId,
+      senderId: senderId ?? '',
+      storeId: storeId ?? ''
     },
-    resolver: zodResolver(MessageSchema),
-  });
+    resolver: zodResolver(MessageSchema)
+  })
 
-  function onSubmit(values: MessageFormValues) {
+  function onSubmit (values: MessageFormValues) {
     startTransition(() => {
-      sendComment(values).then((res) => {
-        form.reset();
-      });
-    });
+      sendComment(values)
+        .then((res) => {
+          form.reset()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    })
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <section className="flex gap-2 items-center">
+        <section className="flex items-center gap-2">
           <FormField
             control={form.control}
             name="content"
@@ -78,5 +81,5 @@ export const ChatMessageForrm: React.FC<ChatMessageForrmProps> = ({
         </section>
       </form>
     </Form>
-  );
-};
+  )
+}

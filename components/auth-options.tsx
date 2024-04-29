@@ -1,6 +1,6 @@
-import React from "react";
-import { Button } from "./ui/button";
-import Link from "next/link";
+import React from 'react'
+import { Button } from './ui/button'
+import Link from 'next/link'
 
 const AuthButtons = () => {
   return (
@@ -12,7 +12,7 @@ const AuthButtons = () => {
         <Link href="/auth/register">Registrarse</Link>
       </Button>
     </section>
-  );
-};
+  )
+}
 
-export default AuthButtons;
+export default AuthButtons

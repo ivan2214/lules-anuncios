@@ -1,13 +1,13 @@
-import { NewFerificationStoreForm } from '@/components/auth/store/new-verification-store-form';
+import { NewFerificationStoreForm } from '@/components/auth/store/new-verification-store-form'
 
 const NewVerificationStorePage = ({
   searchParams
 }: {
   searchParams: {
-    token?: string;
-  };
+    token?: string
+  }
 }) => {
-  return <NewFerificationStoreForm token={searchParams.token} />;
-};
+  return <NewFerificationStoreForm token={searchParams.token} />
+}
 
-export default NewVerificationStorePage;
+export default NewVerificationStorePage
