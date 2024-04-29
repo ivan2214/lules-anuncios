@@ -24,8 +24,6 @@ export const getOffer = async (offerId: string) => {
       },
     });
 
-    console.log("offer", offer);
-    
     return offer;
   } catch (error) {
     console.error(error);

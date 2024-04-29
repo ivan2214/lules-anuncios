@@ -88,7 +88,6 @@ export const CreateOfferForm = () => {
         form.setValue("categories", [...oldValues, { name: categoryName }]);
 
         const valuesForm = form.getValues();
-        console.log("valuesForm", valuesForm);
 
         // Limpiar el campo de entrada
         inputElement.value = "";

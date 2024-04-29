@@ -1,6 +1,5 @@
 "use server";
 
-
 import { OfferFormValues } from "@/app/(routes)/create-offer/components/create-offer-form";
 import { db } from "@/lib/db";
 import { OfferSchema } from "@/schemas";
@@ -9,8 +8,6 @@ import { Image, Offer } from "@prisma/client";
 export const createOffer = async (values: OfferFormValues) => {
   let offer: Offer | null = null;
   const validatedFields = OfferSchema.safeParse(values);
-
-  console.log(values);
 
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
@@ -39,6 +36,16 @@ export const createOffer = async (values: OfferFormValues) => {
     },
   });
 
+  const chat = await db.chat.create({
+    data: {
+      store: {
+        connect: {
+          id: storeId,
+        },
+      },
+    },
+  });
+
   if (imagesIsAlreadyCreated.length && categorieIsAlreadyCreated.length) {
     offer = await db.offer.create({
       data: {
@@ -54,6 +61,7 @@ export const createOffer = async (values: OfferFormValues) => {
         images: {
           connect: imagesIsAlreadyCreated.map((image) => ({ id: image.id })),
         },
+        chatId: chat.id,
       },
     });
   }
@@ -73,6 +81,7 @@ export const createOffer = async (values: OfferFormValues) => {
         images: {
           connect: imagesIsAlreadyCreated.map((image) => ({ id: image.id })),
         },
+        chatId: chat.id,
       },
     });
   }
@@ -94,6 +103,7 @@ export const createOffer = async (values: OfferFormValues) => {
             url: image.url,
           })),
         },
+        chatId: chat.id,
       },
     });
   }
@@ -115,6 +125,7 @@ export const createOffer = async (values: OfferFormValues) => {
             url: image.url,
           })),
         },
+        chatId: chat.id,
       },
     });
   }
