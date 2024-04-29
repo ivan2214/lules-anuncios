@@ -11,6 +11,8 @@ import Icon, { IconProps } from "../ui/icon";
 import { Separator } from "../ui/separator";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
+import { Store } from "@prisma/client";
+import { Badge } from "../ui/badge";
 
 export interface Route {
   name: string;
@@ -44,7 +46,7 @@ const routesStore: Route[] = [
   },
 ];
 
-const UserMenu = ({ user }: { user: User }) => {
+const UserMenu = ({ user, store }: { user: User; store?: Store | null }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -69,8 +71,17 @@ const UserMenu = ({ user }: { user: User }) => {
       </PopoverTrigger>
       <PopoverContent align="end" className="p-0" side="bottom">
         <div className="flex flex-col gap-3 p-4">
-          <p className="text-base font-light">{user.email}</p>
-
+          {!store && <p className="text-base font-light">{user.email}</p>}
+          {store && (
+            <section className="flex flex-col gap-2">
+              <h3 className="text-xl font-semibold">{store.name}</h3>
+              <p className="text-base font-light text-muted-foreground">{user.email}</p>
+              <div className="flex items-center gap-2 text-base font-normal">
+                Cuenta tipo 
+                <Badge>Tienda</Badge>
+              </div>
+            </section>
+          )}
           <Separator />
 
           {routesUser?.map((route) => (

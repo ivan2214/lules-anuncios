@@ -15,7 +15,8 @@ export const getStoreByEmail = async (email: string) => {
   }
 };
 
-export const getStoreById = async (id: string) => {
+export const getStoreById = async (id?: string) => {
+  if (!id) return null;
   try {
     const store = await db.store.findUnique({
       where: {

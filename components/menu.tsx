@@ -19,7 +19,7 @@ import { Suspense } from "react";
 import SearchBarFallback from "./fallbacks/search-bar-fallback";
 import { Category, Store } from "@prisma/client";
 import AuthButtons from "@/components/auth-options";
-import { Session } from "next-auth";
+import { User } from "next-auth";
 import { Button } from "@/components/ui/button";
 
 const filterOptions = [
@@ -68,11 +68,13 @@ const sortOptions = [
 export function Menu({
   categories,
   stores,
-  session,
+  user,
+  store,
 }: {
   categories?: Category[];
   stores?: Store[];
-  session?: Session | null;
+  user?: User | null;
+  store?: Store | null;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -80,7 +82,6 @@ export function Menu({
   const selectedSortValues = searchParams.get("sort")?.split(",");
   const selectedFilterValues = searchParams.get("filter");
   const router = useRouter();
-  const { user } = session || {};
 
   const handleCategoryClick = (categoryValue: string) => {
     const newParams = new URLSearchParams(searchParams?.toString());
@@ -243,7 +244,7 @@ export function Menu({
           <SearchBar />
         </Suspense>
         {!user && <AuthButtons />}
-        {user && (
+        {store && (
           <Button>
             <Link
               className="flex items-center gap-2 text-base font-light"
@@ -253,7 +254,7 @@ export function Menu({
             </Link>
           </Button>
         )}
-        {user && <UserMenu user={user} />}
+        {user && <UserMenu store={store} user={user} />}
       </section>
     </Menubar>
   );

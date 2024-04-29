@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import SearchBarFallback from "@/components/fallbacks/search-bar-fallback";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
+import { getStoreById } from "@/data/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default async function RootLayout({
   const categories = await db.category.findMany({});
   const stores = await db.store.findMany({});
   const session = await auth();
+  const store = await getStoreById(session?.user.id);
 
   return (
     <html lang="en">
@@ -33,7 +35,7 @@ export default async function RootLayout({
         )}
       >
         <Suspense fallback={<SearchBarFallback />}>
-          <Menu categories={categories} stores={stores} session={session} />
+          <Menu categories={categories} stores={stores} user={session?.user} store={store} />
         </Suspense>
         {children}
       </body>
