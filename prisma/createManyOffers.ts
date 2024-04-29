@@ -1,14 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { db } from "../lib/db";
 import { mockPlan } from "./mocks";
-import { MessageSender } from "@prisma/client";
+import { Image, MessageSender } from "@prisma/client";
 
 export const createManyOffers = async () => {
   for (let i = 0; i < 45; i++) {
     const randomName = faker.commerce.productName();
     const randomPrice = faker.commerce.price();
     const randomDescription = faker.lorem.sentence();
-    const randomImage = faker.image.urlPicsumPhotos();
     const randomCategory = faker.commerce.department();
     const randomStoreName = faker.company.name();
     const randomStoreAddress = faker.location.streetAddress();
@@ -41,21 +40,9 @@ export const createManyOffers = async () => {
       },
     });
 
-    const storeIsAlreadyCreated = await db.store.findFirst({
-      where: {
-        name: randomStoreName,
-      },
-    });
-
     const planIsAlreadyCreated = await db.plan.findFirst({
       where: {
         name: randomPlanName,
-      },
-    });
-
-    const imageIsAlreadyCreated = await db.image.findFirst({
-      where: {
-        url: randomImage,
       },
     });
 
@@ -72,19 +59,11 @@ export const createManyOffers = async () => {
       },
     });
 
+    let imagesCreatedForOffers: Image[] = [];
+
     const offer = await db.offer.create({
       data: {
         ...data,
-        images: {
-          connectOrCreate: {
-            where: {
-              id: imageIsAlreadyCreated?.id ?? "",
-            },
-            create: {
-              url: randomImage,
-            },
-          },
-        },
         categories: {
           connectOrCreate: {
             where: {
@@ -135,6 +114,20 @@ export const createManyOffers = async () => {
         store: true,
       },
     });
+
+    for (let i = 0; i < faker.number.int({ min: 1, max: 4 }); i++) {
+      const image = await db.image.create({
+        data: {
+          url: faker.image.urlPicsumPhotos(),
+          offer: {
+            connect: {
+              id: offer.id,
+            },
+          },
+        },
+      });
+      imagesCreatedForOffers.push(image);
+    }
 
     for (let i = 0; i < faker.number.int({ min: 1, max: 10 }); i++) {
       const randomSender = faker.datatype.boolean()
